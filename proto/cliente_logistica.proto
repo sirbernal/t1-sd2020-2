@@ -1,0 +1,17 @@
+syntax = "proto3";
+ 
+package cliente_logistica;
+
+option go_package = "github.com/sirbernal/t1-sd2020-2;t1_sd2020_2";
+
+message ClientRequest {
+    string msg = 1;
+}
+ 
+message ClientResponse {
+    string confirmation = 1;
+}
+ 
+service ClientService {
+    rpc Client(ClientRequest) returns (ClientResponse) {}
+}
