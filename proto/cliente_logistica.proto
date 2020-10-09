@@ -4,14 +4,10 @@ package cliente_logistica;
 
 option go_package = "/cliente_logistica"; 
 
-message Envio{
-    string msg = 1;
-    string msg2 = 2;
-}
 
 message SeguimientoRequest {
-    repeated Envio seg = 1;
-    
+    string msg = 1;
+    string msg2 = 2;
 }
 
  

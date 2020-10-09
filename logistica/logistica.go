@@ -2,12 +2,11 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net"
-	protos "t1-sd2020-2/proto"
-
-	"google.golang.org/grpc"
+	"fmt"
+	cl "github.com/sirbernal/t1-sd2020-2/proto/cliente_logistica"
+	grpc "google.golang.org/grpc"
 )
 
 const (
@@ -17,22 +16,31 @@ const (
 type server struct {
 }
 
-func Seguimiento(ctx context.Context, in *SeguimientoRequest) (*SeguimientoResponse, error) {
-	fmt.Println("Wea llego a server")
-	return &SeguimientoResponse{}, nil
+func (s *server) Seguimiento(ctx context.Context, in *cl.SeguimientoRequest) (*cl.SeguimientoResponse, error){
+	
+	return &cl.SeguimientoResponse{ Confirmation: "Chupa el pico",}, nil
 }
 
+/*
+func Seguimiento(ctx context.Context, in *cl.SeguimientoRequest) (*cl.SeguimientoResponse, error) {
+	fmt.Println("Wea llego a server")
+	return &cl.SeguimientoResponse{}, nil
+}
+*/
+
+
 func main() {
-	lis, err := net.Listen("tpc", port)
+	fmt.Println("Chupa el cayuyon")
+	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatal("erro %v", err)
 	}
 
-	defer conn.Close()
 
 	s := grpc.NewServer()
 
-	protos.RegisterSeguimientoServiceServer(s, &server{})
+	cl.RegisterSeguimientoServiceServer(s, &server{})
+	
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
