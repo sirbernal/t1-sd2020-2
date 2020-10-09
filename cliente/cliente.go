@@ -3,8 +3,8 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net"
-
+	"time"
+	cl "github.com/sirbernal/t1-sd2020-2/proto/cliente_logistica"
 	"google.golang.org/grpc"
 )
 
@@ -13,31 +13,26 @@ const (
 )
 
 func main() {
-	fms.Println("Hola soy el usuario")
+	fmt.Println("Hola soy el usuario")
 	conn, err := grpc.Dial(dire, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("Conn err: %v", err)
 
 	}
 	defer conn.Close()
-	c := NewSeguimientoServiceClient(conn)
+	c := cl.NewSeguimientoServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	envios := []*Envio{}
-
-	envios = append(products, &Product){
-		msg : "wea",
-		msg2: "wea2"
+	envio := &cl.SeguimientoRequest{
+		Msg: "wea",
+		Msg2: "wea2",
 	}
-	r, err := c.SeguimientoService(ctx, &SeguimientoServiceRequest{
-		
-		Envios : envios
-	}
+	r, err := c.Seguimiento(ctx, envio)
 
-	if err =! nil {
+	if err != nil {
 		log.Fatalf("Requ err: %v", err)
 	}
 
-	log.Println("Respuesta : ", r)
+	log.Println("Respuesta : ", r.GetConfirmation())
 }

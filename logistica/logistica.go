@@ -16,8 +16,8 @@ const (
 type server struct {
 }
 
-func (s *server) Seguimiento(ctx context.Context, in *cl.SeguimientoRequest) (*cl.SeguimientoResponse, error){
-	
+func (s *server) Seguimiento(ctx context.Context, msg *cl.SeguimientoRequest) (*cl.SeguimientoResponse, error){
+	fmt.Println(msg.GetMsg(), msg.GetMsg2())
 	return &cl.SeguimientoResponse{ Confirmation: "Chupa el pico",}, nil
 }
 
@@ -30,10 +30,10 @@ func Seguimiento(ctx context.Context, in *cl.SeguimientoRequest) (*cl.Seguimient
 
 
 func main() {
-	fmt.Println("Chupa el cayuyon")
+	fmt.Println("Servidor PrestigioExpress <Logistica> corriendo")
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatal("erro %v", err)
+		log.Fatal("Error conectando: %v", err)
 	}
 
 
