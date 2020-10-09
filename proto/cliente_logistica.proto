@@ -2,16 +2,23 @@ syntax = "proto3";
  
 package cliente_logistica;
 
-option go_package = "github.com/sirbernal/t1-sd2020-2;t1_sd2020_2";
+option go_package = "/cliente_logistica"; 
 
-message ClientRequest {
+message Envio{
     string msg = 1;
+    string msg2 = 2;
 }
+
+message SeguimientoRequest {
+    repeated Envio seg = 1;
+    
+}
+
  
-message ClientResponse {
+message SeguimientoResponse {
     string confirmation = 1;
 }
  
-service ClientService {
-    rpc Client(ClientRequest) returns (ClientResponse) {}
+service SeguimientoService {
+    rpc Seguimiento (SeguimientoRequest) returns (SeguimientoResponse) {}
 }
