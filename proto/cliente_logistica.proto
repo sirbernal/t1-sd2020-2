@@ -4,10 +4,22 @@ package cliente_logistica;
 
 option go_package = "/cliente_logistica"; 
 
+message EnvioRequest {
+    string id = 1; 
+	string producto = 2;
+	int64 valor = 3;
+    string tienda = 4;
+    string destino = 5;
+}
+
+message EnvioResponse{
+    string msg = 1;
+}
+
+
 
 message SeguimientoRequest {
-    string msg = 1;
-    string msg2 = 2;
+    string seguimiento = 1;
 }
 
  
@@ -17,4 +29,8 @@ message SeguimientoResponse {
  
 service SeguimientoService {
     rpc Seguimiento (SeguimientoRequest) returns (SeguimientoResponse) {}
+}
+
+service EnvioService {
+    rpc Envio (EnvioRequest) returns (EnvioResponse) {}
 }

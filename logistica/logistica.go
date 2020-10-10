@@ -13,12 +13,28 @@ const (
 	port = ":50051"
 )
 
+type Pedido struct{
+	id string
+	producto string
+	valor int32
+	tienda string
+	destino string
+	prioritario int32
+}
+
 type server struct {
 }
 
-func (s *server) Seguimiento(ctx context.Context, msg *cl.SeguimientoRequest) (*cl.SeguimientoResponse, error){
+/* func (s *server) Seguimiento(ctx context.Context, msg *cl.SeguimientoRequest) (*cl.SeguimientoResponse, error){
 	fmt.Println(msg.GetMsg(), msg.GetMsg2())
 	return &cl.SeguimientoResponse{ Confirmation: "Chupa el pico",}, nil
+} */
+
+func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
+	fmt.Println(msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino())
+	return &cl.EnvioResponse {
+		Msg: "Recibido!",
+	}, nil
 }
 
 /*
@@ -39,9 +55,10 @@ func main() {
 
 	s := grpc.NewServer()
 
-	cl.RegisterSeguimientoServiceServer(s, &server{})
-	
+	//cl.RegisterSeguimientoServiceServer(s, &server{})
+	cl.RegisterEnvioServiceServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
+	fmt.Println("Wea lista pa hacer algo")
 }
