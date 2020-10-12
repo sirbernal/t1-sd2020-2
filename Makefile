@@ -5,7 +5,7 @@ grpc:
 	export PATH="$PATH:$(go env GOPATH)/bin"
 
 cliente_logistica: grpc
-	protoc --go_out=paths=source_relative:. -I. proto/cliente_logistica.proto
+	protoc --proto_path=. --go_out=plugins=grpc:proto proto/cliente_logistica.proto
 
 print:
 	echo "print"
