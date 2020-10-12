@@ -23,27 +23,33 @@ type server struct {
 }
 
 var numseg int64 =0
-var fullreg [][] string
 
 
 func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
 	//fmt.Println(time.Now().Format("02-01-2006 15:04:05"),msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino(), msg.GetPrioritario(), numseg)
 	var tipo string
+	var seguimiento int64 = 0
 	switch msg.GetPrioritario(){
 	case 0:
 		tipo="normal"
+		seguimiento += numseg
+		numseg+=1
+
 	case 1:
 		tipo="prioritario"
+		seguimiento += numseg
+		numseg+=1
 	case 2:
 		tipo="retail"
+
 	default:
 		break
 	}
+	
 	linea:= []string{time.Now().Format("02-01-2006 15:04:05"),msg.GetId(),
 			tipo,msg.GetProducto(),strconv.FormatInt(msg.GetValor(),10),msg.GetTienda(),msg.GetDestino(),
-			strconv.FormatInt(numseg,10)} 
+			strconv.FormatInt(seguimiento,10)} 
 	fullreg= append(fullreg,linea)
-	numseg+=1
 	//registro y sobreescritura por cada ingreso
 	file,err:= os.OpenFile("registro.csv",os.O_CREATE|os.O_WRONLY,0777)
 	defer file.Close()
@@ -55,7 +61,7 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 	csvWriter.Flush()
 	
 	return &cl.EnvioResponse {
-		Msg: strconv.FormatInt(numseg-1,10),
+		Msg: strconv.FormatInt(seguimiento,10),
 	}, nil
 }
 
@@ -82,5 +88,5 @@ func main() {
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-	fmt.Println("Wea lista pa hacer algo")
+	
 }

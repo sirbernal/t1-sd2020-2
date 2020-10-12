@@ -28,7 +28,9 @@ type Envio struct{
 
 func main() {
 	
-	fmt.Println("Hola soy el usuario")
+	//fmt.Println("Usuario del sistema PrestigioExpress, por favor ingresar el tiempo de envio de pedidos a logistica (en segundos): ")
+	//var tiempo int64
+	//fmt.Scanln(&tiempo)  
 	// Creando conexion TCP
 	conn, err := grpc.Dial(dire, grpc.WithInsecure())
 	if err != nil {
@@ -105,8 +107,9 @@ func main() {
 				Destino : lista_envios[i].destino,
 				Prioritario : lista_envios[i].prioritario,
 			}
-
+			
 			r, err := c.Envio(ctx, envio)
+			//time.Sleep(time.Duration(tiempo)* time.Second)
 			if err != nil {
 				log.Fatalf("Requ err: %v", err)
 			}
