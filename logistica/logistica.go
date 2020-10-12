@@ -22,9 +22,19 @@ const (
 type server struct {
 }
 
+type Registro struct{
+	id_paquete string
+	estado_paquete int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
+	id_camion string
+	seguimiento int64
+	intentos int64
+}
+
 var numseg int64 =0
-
-
+var fullreg [][] string
+var colaretail[] Registro
+var colaprioritario[] Registro
+var colanormal[] Registro
 func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
 	//fmt.Println(time.Now().Format("02-01-2006 15:04:05"),msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino(), msg.GetPrioritario(), numseg)
 	var tipo string
@@ -49,6 +59,23 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 	linea:= []string{time.Now().Format("02-01-2006 15:04:05"),msg.GetId(),
 			tipo,msg.GetProducto(),strconv.FormatInt(msg.GetValor(),10),msg.GetTienda(),msg.GetDestino(),
 			strconv.FormatInt(seguimiento,10)} 
+	reg := Registro{
+		id_paquete : msg.GetId(),
+		estado_paquete : 0,
+		id_camion : "Sin Designar",
+		seguimiento : seguimiento,
+		intentos : 0,
+	}
+	switch msg.GetPrioritario(){
+	case 0:
+		colanormal= append(colanormal,reg)
+	case 1:
+		colaprioritario= append(colaprioritario,reg)
+	case 2:
+		colaretail= append(colaretail,reg)
+	default:
+		break
+	}
 	fullreg= append(fullreg,linea)
 	//registro y sobreescritura por cada ingreso
 	file,err:= os.OpenFile("registro.csv",os.O_CREATE|os.O_WRONLY,0777)
@@ -59,18 +86,14 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 	csvWriter:= csv.NewWriter(file)
 	csvWriter.WriteAll(fullreg)
 	csvWriter.Flush()
-	
+	fmt.Println(colaretail)
+	fmt.Println(colaprioritario)
+	fmt.Println(colanormal)
 	return &cl.EnvioResponse {
 		Msg: strconv.FormatInt(seguimiento,10),
 	}, nil
 }
 
-/*
-func Seguimiento(ctx context.Context, in *cl.SeguimientoRequest) (*cl.SeguimientoResponse, error) {
-	fmt.Println("Wea llego a server")
-	return &cl.SeguimientoResponse{}, nil
-}
-*/
 
 
 func main() {
