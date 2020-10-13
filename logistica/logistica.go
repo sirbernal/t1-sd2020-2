@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"os"
 	"encoding/csv"
+	"reflect"
 	cl "github.com/sirbernal/t1-sd2020-2/proto/cliente_logistica"
 	pb "github.com/sirbernal/t1-sd2020-2/proto/camion_logistica"
 	grpc "google.golang.org/grpc"
@@ -24,18 +25,70 @@ type server struct {
 }
 
 type Registro struct{
-	id_paquete string
-	estado_paquete int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
-	id_camion string
+	IDpaquete string
 	seguimiento int64
+	tipo int64
+	valor int64
 	intentos int64
+	estado int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
 }
+
 
 var numseg int64 =0
 var fullreg [][] string
 var colaretail[] Registro
 var colaprioritario[] Registro
 var colanormal[] Registro
+
+
+
+func CalcularEnvio() [6]Registro{
+	var paqtruck [6]Registro
+	void := Registro{}
+	for _,pack:= range colaretail{
+		if (!(reflect.DeepEqual(paqtruck[3],void))){
+			break
+		}
+		for a := 0; a < 4 ; a++{
+			if reflect.DeepEqual(paqtruck[a],pack){
+				break
+			}
+			if reflect.DeepEqual(paqtruck[a],void){
+				paqtruck[a]=pack
+				break
+			}
+		}
+	}
+	for _,pack:= range colaprioritario{
+		if (!(reflect.DeepEqual(paqtruck[5],void))){
+				break
+		}
+		for b := 0 ;b<6;b++{
+			if reflect.DeepEqual(paqtruck[b],pack){
+				break
+			}
+			if reflect.DeepEqual(paqtruck[b],void){
+				paqtruck[b]=pack
+				break
+			}
+		}
+	}
+	for _,pack:= range colanormal{
+		if (!(reflect.DeepEqual(paqtruck[5],void))){
+				break
+		}
+		for c := 4; c < 6; c++{
+			if reflect.DeepEqual(paqtruck[c],pack){
+				break
+			}
+			if reflect.DeepEqual(paqtruck[c],void){
+				paqtruck[c]=pack
+				break
+			}
+		}
+	}
+	return paqtruck
+}
 func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
 	//fmt.Println(time.Now().Format("02-01-2006 15:04:05"),msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino(), msg.GetPrioritario(), numseg)
 	var tipo string
@@ -61,11 +114,12 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 			tipo,msg.GetProducto(),strconv.FormatInt(msg.GetValor(),10),msg.GetTienda(),msg.GetDestino(),
 			strconv.FormatInt(seguimiento,10)} 
 	reg := Registro{
-		id_paquete : msg.GetId(),
-		estado_paquete : 0,
-		id_camion : "Sin Designar",
+		IDpaquete : msg.GetId(),
 		seguimiento : seguimiento,
+		tipo : msg.GetPrioritario(),
+		valor :  msg.GetValor(),
 		intentos : 0,
+		estado : 0,
 	}
 	switch msg.GetPrioritario(){
 	case 0:
@@ -87,9 +141,9 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 	csvWriter:= csv.NewWriter(file)
 	csvWriter.WriteAll(fullreg)
 	csvWriter.Flush()
-	fmt.Println(colaretail)
-	fmt.Println(colaprioritario)
-	fmt.Println(colanormal)
+	//fmt.Println(colaretail)
+	//fmt.Println(colaprioritario)
+	//fmt.Println(colanormal)
 	return &cl.EnvioResponse {
 		Msg: strconv.FormatInt(seguimiento,10),
 	}, nil
