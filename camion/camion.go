@@ -2,7 +2,8 @@ package main
 import (
 	"context"
 	"log"
-	"time"
+	"fmt"
+	//"time"
 	pb "github.com/sirbernal/t1-sd2020-2/proto/camion_logistica"
 	"google.golang.org/grpc"
 )
@@ -35,24 +36,28 @@ func main() {
 	stream, err := client.Camion(context.Background())
 	waitc := make(chan struct{})
 
-	msg := &pb.CamionRequest{Status: "wea"}
+	msg := &pb.CamionRequest{Status: "listo pa marakear" }
 	go func() {
-		for i := 1; i <= 10; i++ {
+		for i := 0; i <= 1; i++ {
+		stream.Send(msg) }
+		/*for i := 1; i <= 10; i++ {
 			log.Println("Sleeping...")
 			time.Sleep(2 * time.Second)
 			log.Println("Sending msg...")
 			stream.Send(msg)
-		}
+		}*/
 	}()
 	//time.Sleep(10 * time.Second)
 	go func() {
 		for {
 			resp, err := stream.Recv()
+			fmt.Println(resp.IdPaquete)
+			fmt.Println(resp.Intentos)
 			if err != nil {
 				log.Fatalf("can not receive %v", err)
 			}
-
-			log.Printf(resp.Algo)
+			
+			
 		}
 	}()
 

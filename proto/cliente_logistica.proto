@@ -18,23 +18,7 @@ message EnvioResponse{
 }
 
 
-
-message CamionRequest {
-    string status = 1;
-
-}
-
- 
-message CamionResponse {
-    string algo = 1;
-}
- 
-service SeguimientoService {
-    rpc Seguimiento (SeguimientoRequest) returns (SeguimientoResponse) {}
-}
-
 service EnvioService {
     rpc Envio (EnvioRequest) returns (EnvioResponse) {}
-    rpc Camion (stream CamionRequest) returns (stream CamionResponse) {}
   
 }

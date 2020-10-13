@@ -144,9 +144,12 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 	//fmt.Println(colaretail)
 	//fmt.Println(colaprioritario)
 	//fmt.Println(colanormal)
+	fmt.Println(CalcularEnvio())
 	return &cl.EnvioResponse {
 		Msg: strconv.FormatInt(seguimiento,10),
 	}, nil
+	
+	
 }
 
 func (s *server) Camion(stream pb.CamionService_CamionServer) error {
@@ -156,11 +159,26 @@ func (s *server) Camion(stream pb.CamionService_CamionServer) error {
 		if err != nil {
 			log.Fatalf("RPC failed: %v", err)
 		}
+
 		fmt.Println(req)
-		resp := pb.CamionResponse{Algo: "Mis cojones"}
-		if err := stream.Send(&resp); err != nil {
-			log.Printf("send error %v", err)
+
+		paquetes := CalcularEnvio()
+		
+		for _, paquete:= range paquetes {
+			fmt.Println(paquete)
+			resp := pb.CamionResponse{
+				IdPaquete: paquete.IDpaquete,   
+				Seguimiento: paquete.seguimiento,
+				Tipo: paquete.tipo,        
+				Valor: paquete.valor,       
+				Intentos: paquete.intentos,    
+				Estado: paquete.estado,	}
+			if err := stream.Send(&resp); err != nil {
+				log.Printf("send error %v", err)
+			}
+			
 		}
+		
 
 	}
 	
