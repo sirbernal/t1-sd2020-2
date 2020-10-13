@@ -1,0 +1,20 @@
+syntax = "proto3";
+ 
+package cliente_logistica;
+
+option go_package = "/camion_logistica"; 
+
+message CamionRequest {
+    string status = 1;
+
+}
+ 
+message CamionResponse {
+    string algo = 1;
+}
+ 
+
+service CamionService {
+    rpc Camion (stream CamionRequest) returns (stream CamionResponse) {}
+  
+}

@@ -10,6 +10,7 @@ import (
 	"os"
 	"encoding/csv"
 	cl "github.com/sirbernal/t1-sd2020-2/proto/cliente_logistica"
+	pb "github.com/sirbernal/t1-sd2020-2/proto/camion_logistica"
 	grpc "google.golang.org/grpc"
 )
 
@@ -94,6 +95,23 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 	}, nil
 }
 
+func (s *server) Camion(stream pb.CamionService_CamionServer) error {
+	
+	for {
+		req, err := stream.Recv()
+		if err != nil {
+			log.Fatalf("RPC failed: %v", err)
+		}
+		fmt.Println(req)
+		resp := pb.CamionResponse{Algo: "Mis cojones"}
+		if err := stream.Send(&resp); err != nil {
+			log.Printf("send error %v", err)
+		}
+
+	}
+	
+	
+}
 
 
 func main() {
@@ -103,13 +121,14 @@ func main() {
 		log.Fatal("Error conectando: %v", err)
 	}
 
-	
 	s := grpc.NewServer()
 
 	//cl.RegisterSeguimientoServiceServer(s, &server{})
+	pb.RegisterCamionServiceServer(s, &server{})
 	cl.RegisterEnvioServiceServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 	
 }
+
