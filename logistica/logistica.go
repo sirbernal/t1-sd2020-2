@@ -95,11 +95,10 @@ func CalcularEnvio() [6]Registro{
 	}
 	return paqtruck
 }
-/*func recepcionCamion(rescam [6]Registro){
-	for _,pack := range rescam{
-		completa
-	}
-}*/
+//func recepcionCamion(rescam [6]Registro){
+//	for _,pack := range rescam{	
+//	}
+//}
 func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
 	//fmt.Println(time.Now().Format("02-01-2006 15:04:05"),msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino(), msg.GetPrioritario(), numseg)
 	var tipo string
@@ -165,49 +164,49 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 
 func (s *server) Camion(stream pb.CamionService_CamionServer) error {
 	for {
-		_, err := stream.Recv()
+		req, err := stream.Recv()
 		if err != nil {
 			log.Fatalf("RPC failed: %v", err)
 		}
-
-		paquetes := CalcularEnvio()
-		for _, paquete:= range paquetes {
-			fmt.Println(paquete)
-			resp := pb.CamionResponse{
-				IdPaquete: paquete.IDpaquete,   
-				Seguimiento: paquete.seguimiento,
-				Tipo: paquete.tipo,        
-				Valor: paquete.valor,       
-				Intentos: paquete.intentos,    
-				Estado: paquete.estado,	}
-			if err := stream.Send(&resp); err != nil {
-				log.Printf("send error %v", err)
-
-		/*if req.IdPaquete == ""{
-		
+		//recepcion:= [6]Registro{}
+		//counterrecep:= 0
+		if req.Seguimiento != -1{
+			fmt.Println("Soy un paquete de verdad")
+			/*recepcion[counterrecep]=Registro{
+				IDpaquete: req.IdPaquete,   
+				seguimiento: req.Seguimiento,
+				tipo: req.Tipo,        
+				valor: req.Valor,       
+				intentos: req.Intentos,    
+				estado: req.Estado,	
+			}
+			counterrecep++
+			if counterrecep==5{
+				counterrecep=0
+				//recepcionCamion(recepcion)
+				recepcion=[6]Registro{}
+			}*/
+		}else{
+			fmt.Println("Paquetito fake")
 			paquetes := CalcularEnvio()
-
 			for _, paquete:= range paquetes {
-				fmt.Println(paquete)
+				//fmt.Println(paquete)
 				resp := pb.CamionResponse{
 					IdPaquete: paquete.IDpaquete,   
 					Seguimiento: paquete.seguimiento,
 					Tipo: paquete.tipo,        
 					Valor: paquete.valor,       
 					Intentos: paquete.intentos,    
-					Estado: paquete.estado,	}
+					Estado: paquete.estado,	
+				}
 				if err := stream.Send(&resp); err != nil {
 					log.Printf("send error %v", err)
+				}
 			}
-		}*/
-
-			
-	
-		
-}
+		}
 	}
 }
-}
+
 
 
 

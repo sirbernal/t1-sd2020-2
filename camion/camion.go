@@ -134,8 +134,7 @@ func main() {
 				log.Fatalf("can not receive %v", err)
 			}
 			npack++
-			if npack>5{
-				npack=0
+			if npack==6{
 				resultado = simularEnvio(envios)
 				for _, pack := range resultado{
 					msg2 := &pb.CamionRequest{
@@ -146,7 +145,13 @@ func main() {
 						Intentos: pack.intentos,    
 						Estado: pack.estado }
 					stream.Send(msg2)
+					time.Sleep(1 * time.Second)
 				}
+				npack++
+			}
+			if npack==7{
+				stream.Send(msg)
+				npack=0
 			}
 			time.Sleep(2 * time.Second)
 			//fmt.Println(envios)
