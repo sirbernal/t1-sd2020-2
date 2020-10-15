@@ -92,7 +92,7 @@ func CalcularEnvio() [6]Registro{
 func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
 	//fmt.Println(time.Now().Format("02-01-2006 15:04:05"),msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino(), msg.GetPrioritario(), numseg)
 	var tipo string
-	var seguimiento int64 = 0
+	var seguimiento int64 = 1
 	switch msg.GetPrioritario(){
 	case 0:
 		tipo="normal"
@@ -178,13 +178,20 @@ func (s *server) Camion(stream pb.CamionService_CamionServer) error {
 			}
 			
 		}
-		
-
 	}
-	
-	
+		
 }
 
+func (s *server) Logistica(stream2 pb.CamionService_LogisticaServer) error { 
+	for {
+		req, err := stream2.Recv()
+		if err != nil {
+			log.Fatalf("RPC failed: %v", err)
+		}
+		fmt.Println(req.IdPaquete, req.Seguimiento, req.Tipo, req.Estado)
+
+}
+}
 
 func main() {
 	fmt.Println("Servidor PrestigioExpress <Logistica> corriendo")

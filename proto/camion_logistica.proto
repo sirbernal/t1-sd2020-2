@@ -2,7 +2,8 @@ syntax = "proto3";
  
 package cliente_logistica;
 
-option go_package = "/camion_logistica"; 
+option go_package = "/camion_logistica";
+
 
 message CamionRequest {
     string status = 1;
@@ -18,9 +19,28 @@ message CamionResponse {
     int64 estado = 6;
 
 }
- 
+
+message LogisticaRequest {
+    string id_paquete = 1;
+    int64 seguimiento = 2;
+    int64 tipo = 3;
+    int64 valor = 4;
+    int64 intentos = 5;
+    int64 estado = 6;
+}
+
+message LogisticaResponse {
+    string id_paquete = 1;
+    int64 seguimiento = 2;
+    int64 tipo = 3;
+    int64 valor = 4;
+    int64 intentos = 5;
+    int64 estado = 6;
+
+}
 
 service CamionService {
     rpc Camion (stream CamionRequest) returns (stream CamionResponse) {}
+    rpc Logistica (stream LogisticaRequest) returns (stream LogisticaResponse) {}
   
 }

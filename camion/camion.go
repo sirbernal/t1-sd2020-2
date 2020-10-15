@@ -61,22 +61,19 @@ func viaje(env [2]Envio)[2]Envio{
 	}
 	return env
 }
-func simularEnvio(env [6]Envio){
+func simularEnvio(env [6]Envio)[6]Envio{ 
 	e0,e1 := menorEnvio(env[0],env[1])
 	e2,e3 := menorEnvio(env[2],env[3])
 	e4,e5 := menorEnvio(env[4],env[5])
 	cam1 :=[2]Envio{e0,e1} //camion retail 1
 	cam2 :=[2]Envio{e2,e3}//camion retail 2
 	cam3 :=[2]Envio{e4,e5} //camion normal
-	fmt.Println(cam1)
-	fmt.Println(cam2)
-	fmt.Println(cam3)
 	cam1 = viaje(cam1)
 	cam2 = viaje(cam2)
 	cam3 = viaje(cam3)
-	fmt.Println(cam1)
-	fmt.Println(cam2)
-	fmt.Println(cam3)
+	resultado := [6]Envio{cam1[0], cam1[1], cam2[0], cam2[1], cam3[0], cam3[1]} 
+	return resultado
+
 }
 
 func main() {
@@ -94,9 +91,9 @@ func main() {
 	stream, err := client.Camion(context.Background())
 	waitc := make(chan struct{})
 
-	msg := &pb.CamionRequest{Status: "listo pa marakear" }
+	msg := &pb.CamionRequest{Status: "Listo para recibir los primeros paquetes" }
 	go func() {
-		for i := 0; i < 2; i++ {
+		for i := 0; i < 1; i++ {
 		stream.Send(msg) }
 			
 		/*for i := 1; i <= 10; i++ {
@@ -108,9 +105,16 @@ func main() {
 	}()
 	//time.Sleep(10 * time.Second)
 	go func() {
+		stream2, err2 := client.Logistica(context.Background())
+		if err2 != nil {
+			log.Fatalf("Conn err2: %v", err)
+		}
 		npack:= 0
+		var resultado [6]Envio
+	
 		for {
 			resp, err := stream.Recv()
+			
 			fmt.Println(resp.IdPaquete)
 			fmt.Println(resp.Intentos)
 			fmt.Println(npack)
@@ -129,10 +133,68 @@ func main() {
 			npack++
 			if npack>5{
 				npack=0
-				simularEnvio(envios)
+				resultado = simularEnvio(envios)
+				for _, pack := range resultado{
+					msg2 := &pb.LogisticaRequest{
+						IdPaquete: pack.idPaquete,   
+						Seguimiento: pack.seguimiento,
+						Tipo: pack.tipo,        
+						Valor: pack.valor,       
+						Intentos: pack.intentos,    
+						Estado: pack.estado }
+					stream2.Send(msg2)
+				}
 			}
+			//msg := &pb.CamionRequest{Status: "Listo para seguir recibiendo mas paquetes" }
+			//stream.Send(msg) 
 			//fmt.Println(envios)
 			
+		}
+
+
+	}()
+	go func() {
+		stream2, err2 := client.Logistica(context.Background())
+		npack:= 0
+		var resultado [6]Envio
+		if err2 != nil {
+			log.Fatalf("Conn err2: %v", err)
+		}
+		for {
+			resp, err := stream2.Recv()
+			fmt.Println(resp.IdPaquete)
+			fmt.Println(resp.Intentos)
+			fmt.Println(npack)
+			paquete := Envio{
+				idPaquete : resp.IdPaquete,
+				seguimiento : resp.Seguimiento,
+				tipo :resp.Tipo,
+				valor :  resp.Valor,
+				intentos : resp.Intentos,
+				estado : 1,
+			}
+			envios[npack]=paquete
+			if err != nil {
+				log.Fatalf("can not receive %v", err)
+			}
+			npack++
+			if npack>5{
+				npack=0
+				resultado = simularEnvio(envios)
+				for _, pack := range resultado{
+					msg2 := &pb.LogisticaRequest{
+						IdPaquete: pack.idPaquete,   
+						Seguimiento: pack.seguimiento,
+						Tipo: pack.tipo,        
+						Valor: pack.valor,       
+						Intentos: pack.intentos,    
+						Estado: pack.estado }
+					stream2.Send(msg2)
+				}
+			}
+			//msg := &pb.CamionRequest{Status: "Listo para seguir recibiendo mas paquetes" }
+			//stream.Send(msg) 
+			//fmt.Println(envios)
 			
 		}
 	}()
