@@ -34,18 +34,18 @@ type Registro struct{
 }
 
 
-var numseg int64 =0
+var numseg int64 =1
 var fullreg [][] string
 var colaretail[] Registro
 var colaprioritario[] Registro
 var colanormal[] Registro
-
+var completados[] Registro
 
 
 func CalcularEnvio() [6]Registro{
 	var paqtruck [6]Registro
 	void := Registro{}
-	for _,pack:= range colaretail{
+	for i,pack:= range colaretail{
 		if (!(reflect.DeepEqual(paqtruck[3],void))){
 			break
 		}
@@ -54,12 +54,14 @@ func CalcularEnvio() [6]Registro{
 				break
 			}
 			if reflect.DeepEqual(paqtruck[a],void){
+				pack.estado=1
 				paqtruck[a]=pack
+				colaretail[i]=pack
 				break
 			}
 		}
 	}
-	for _,pack:= range colaprioritario{
+	for j,pack:= range colaprioritario{
 		if (!(reflect.DeepEqual(paqtruck[5],void))){
 				break
 		}
@@ -68,12 +70,14 @@ func CalcularEnvio() [6]Registro{
 				break
 			}
 			if reflect.DeepEqual(paqtruck[b],void){
+				pack.estado=1
 				paqtruck[b]=pack
+				colaprioritario[j]=pack
 				break
 			}
 		}
 	}
-	for _,pack:= range colanormal{
+	for k,pack:= range colanormal{
 		if (!(reflect.DeepEqual(paqtruck[5],void))){
 				break
 		}
@@ -82,17 +86,24 @@ func CalcularEnvio() [6]Registro{
 				break
 			}
 			if reflect.DeepEqual(paqtruck[c],void){
+				pack.estado=1
 				paqtruck[c]=pack
+				colanormal[k]=pack
 				break
 			}
 		}
 	}
 	return paqtruck
 }
+/*func recepcionCamion(rescam [6]Registro){
+	for _,pack := range rescam{
+		completa
+	}
+}*/
 func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
 	//fmt.Println(time.Now().Format("02-01-2006 15:04:05"),msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino(), msg.GetPrioritario(), numseg)
 	var tipo string
-	var seguimiento int64 = 1
+	var seguimiento int64 = 0
 	switch msg.GetPrioritario(){
 	case 0:
 		tipo="normal"
@@ -188,7 +199,7 @@ func (s *server) Logistica(stream2 pb.CamionService_LogisticaServer) error {
 		if err != nil {
 			log.Fatalf("RPC failed: %v", err)
 		}
-		fmt.Println(req.IdPaquete, req.Seguimiento, req.Tipo, req.Estado)
+		fmt.Println(req.IdPaquete, req.Seguimiento, req.Tipo, req.Estado, req.Intentos)
 
 }
 }

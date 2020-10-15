@@ -45,6 +45,7 @@ func viaje(env [2]Envio)[2]Envio{
 				break
 			}
 			if pac.tipo<2 && int64(x)*10>pac.valor{
+				fmt.Println("ta muy cara la weaita")
 				pac.estado=3
 				break
 			}
@@ -55,6 +56,8 @@ func viaje(env [2]Envio)[2]Envio{
 				pac.estado=2
 				pac.fecha_entrega=time.Now()
 				break
+			}else{
+				fmt.Println("wea mala falló")
 			}
 		}
 		env[i]=pac
@@ -145,8 +148,9 @@ func main() {
 					stream2.Send(msg2)
 				}
 			}
-			//msg := &pb.CamionRequest{Status: "Listo para seguir recibiendo mas paquetes" }
-			//stream.Send(msg) 
+			msg := &pb.CamionRequest{Status: "Listo para seguir recibiendo mas paquetes" }
+			stream.Send(msg) 
+			time.Sleep(2 * time.Second)
 			//fmt.Println(envios)
 			
 		}
@@ -171,7 +175,7 @@ func main() {
 				tipo :resp.Tipo,
 				valor :  resp.Valor,
 				intentos : resp.Intentos,
-				estado : 1,
+				estado : resp.Estado,
 			}
 			envios[npack]=paquete
 			if err != nil {
@@ -192,8 +196,9 @@ func main() {
 					stream2.Send(msg2)
 				}
 			}
-			//msg := &pb.CamionRequest{Status: "Listo para seguir recibiendo mas paquetes" }
-			//stream.Send(msg) 
+			msg := &pb.CamionRequest{Status: "Listo para seguir recibiendo mas paquetes" }
+			stream.Send(msg) 
+			time.Sleep(2 * time.Second)
 			//fmt.Println(envios)
 			
 		}
