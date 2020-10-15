@@ -1,56 +1,56 @@
-15-10-2020 00:42:12,SA1554KF,retail,Polera,10,tienda-A,casa-A,1
-15-10-2020 00:42:12,SA1684AH,retail,Pantalón,12,tienda-B,casa-B,1
-15-10-2020 00:42:12,SA5698PO,retail,Televisor,110,tienda-C,casa-C,1
-15-10-2020 00:42:12,SA5897AS,retail,Consola de Videojuegos,95,tienda-A,casa-D,1
-15-10-2020 00:42:12,SA1589GD,retail,Lavadora,100,tienda-B,casa-Q,1
-15-10-2020 00:42:12,SA8859SS,retail,Polerón,15,tienda-C,casa-A,1
-15-10-2020 00:42:12,SA5713AS,retail,Parca,20,tienda-B,casa-C,1
-15-10-2020 00:42:12,SA2589TR,retail,Pelota,5,tienda-C,casa-P,1
-15-10-2020 00:42:12,SA1597EF,retail,Raqueta,20,tienda-A,casa-F,1
-15-10-2020 00:42:12,SA3574FG,retail,Refrigerador,120,tienda-B,casa-U,1
-15-10-2020 00:42:12,SA3698HJ,retail,Tostador,25,tienda-C,casa-A,1
-15-10-2020 00:42:12,SA2563AS,retail,Perfume,15,tienda-A,casa-N,1
-15-10-2020 00:42:12,SA1937JH,retail,Tobillera,6,tienda-C,casa-N,1
-15-10-2020 00:42:12,SA5648AA,retail,Notebook,80,tienda-B,casa-A,1
-15-10-2020 00:42:12,SA6947GH,retail,Set de ollas,50,tienda-C,casa-C,1
-15-10-2020 00:42:12,SA5588HJ,retail,Parlante,25,tienda-C,casa-E,1
-15-10-2020 00:42:12,SA6644DS,retail,Lampara,30,tienda-A,casa-A,1
-15-10-2020 00:42:12,SA5974AA,retail,Sillón,105,tienda-C,casa-C,1
-15-10-2020 00:42:12,SA2596NH,retail,Mesa,90,tienda-A,casa-S,1
-15-10-2020 00:42:12,SA7748JK,retail,Cama,115,tienda-B,casa-A,1
-15-10-2020 00:42:12,BE127,prioritario,Secador de pelo,15,pyme,casa-K,1
-15-10-2020 00:42:12,BE666,prioritario,Jabón para la ducha,8,pyme,casa-A,2
-15-10-2020 00:42:12,BE855,normal,Acondicionador,10,pyme,casa-A,3
-15-10-2020 00:42:12,BE654,normal,Shampoo,10,pyme,casa-D,4
-15-10-2020 00:42:12,BE785,prioritario,Crema para peinar,8,pyme,casa-E,5
-15-10-2020 00:42:12,PF654,prioritario,Placa madre,50,pyme,casa-B,6
-15-10-2020 00:42:12,PF125,normal,Procesador R,75,pyme,casa-N,7
-15-10-2020 00:42:12,PF111,prioritario,Ventilador,10,pyme,casa-N,8
-15-10-2020 00:42:12,PF245,normal,Gabinete,20,pyme,casa-S,9
-15-10-2020 00:42:12,PF225,prioritario,Fuente de poder,25,pyme,casa-P,10
-15-10-2020 00:42:12,PF354,normal,Memoria RAM,22,pyme,casa-R,11
-15-10-2020 00:42:12,PF542,normal,Procesador I,90,pyme,casa-N,12
-15-10-2020 00:42:12,PF452,prioritario,Tarjeta de video,115,pyme,casa-I,13
-15-10-2020 00:42:12,OF352,prioritario,Set de plumones,9,pyme,casa-C,14
-15-10-2020 00:42:12,OF754,normal,Cuadernos,5,pyme,casa-C,15
-15-10-2020 00:42:12,OF554,normal,Lapices,4,pyme,casa-I,16
-15-10-2020 00:42:12,DE123,normal,Zapatillas de futbol,16,pyme,casa-E,17
-15-10-2020 00:42:12,DE654,prioritario,Pelota de futbol,11,pyme,casa-V,18
-15-10-2020 00:42:12,DE786,prioritario,Raqueta de tenis,15,pyme,casa-Z,19
-15-10-2020 00:42:12,DE245,prioritario,Palo de golf,18,pyme,casa-Y,20
-15-10-2020 00:42:12,CC122,normal,Polera,9,pyme,casa-F,21
-15-10-2020 00:42:12,CC147,prioritario,Pantalón,11,pyme,casa-C,22
-15-10-2020 00:42:12,CC124,normal,Abrigo,17,pyme,casa-U,23
-15-10-2020 00:42:12,CC175,prioritario,Bufanda,6,pyme,casa-A,24
-15-10-2020 00:42:12,CC121,normal,Chaqueta,16,pyme,casa-X,25
-15-10-2020 00:42:12,CC147,prioritario,Sueter,14,pyme,casa-C,26
-15-10-2020 00:42:12,CC121,normal,Pantalón,10,pyme,casa-A,27
-15-10-2020 00:42:12,CC454,normal,Polera,7,pyme,casa-Q,28
-15-10-2020 00:42:12,GG257,normal,Pistachos: 200 g,4,pyme,casa-B,29
-15-10-2020 00:42:12,GG124,normal,Mani: 1 Kg,5,pyme,casa-A,30
-15-10-2020 00:42:12,GG568,normal,Almendras: 500 g,5,pyme,casa-L,31
-15-10-2020 00:42:12,GG301,normal,Chia: 500 g,6,pyme,casa-D,32
-15-10-2020 00:42:12,GG458,prioritario,Arroz: 1 Kg,3,pyme,casa-C,33
+15-10-2020 02:18:13,SA1554KF,retail,Polera,10,tienda-A,casa-A,0
+15-10-2020 02:18:13,SA1684AH,retail,Pantalón,12,tienda-B,casa-B,0
+15-10-2020 02:18:13,SA5698PO,retail,Televisor,110,tienda-C,casa-C,0
+15-10-2020 02:18:13,SA5897AS,retail,Consola de Videojuegos,95,tienda-A,casa-D,0
+15-10-2020 02:18:13,SA1589GD,retail,Lavadora,100,tienda-B,casa-Q,0
+15-10-2020 02:18:13,SA8859SS,retail,Polerón,15,tienda-C,casa-A,0
+15-10-2020 02:18:13,SA5713AS,retail,Parca,20,tienda-B,casa-C,0
+15-10-2020 02:18:13,SA2589TR,retail,Pelota,5,tienda-C,casa-P,0
+15-10-2020 02:18:13,SA1597EF,retail,Raqueta,20,tienda-A,casa-F,0
+15-10-2020 02:18:13,SA3574FG,retail,Refrigerador,120,tienda-B,casa-U,0
+15-10-2020 02:18:13,SA3698HJ,retail,Tostador,25,tienda-C,casa-A,0
+15-10-2020 02:18:13,SA2563AS,retail,Perfume,15,tienda-A,casa-N,0
+15-10-2020 02:18:13,SA1937JH,retail,Tobillera,6,tienda-C,casa-N,0
+15-10-2020 02:18:13,SA5648AA,retail,Notebook,80,tienda-B,casa-A,0
+15-10-2020 02:18:13,SA6947GH,retail,Set de ollas,50,tienda-C,casa-C,0
+15-10-2020 02:18:13,SA5588HJ,retail,Parlante,25,tienda-C,casa-E,0
+15-10-2020 02:18:13,SA6644DS,retail,Lampara,30,tienda-A,casa-A,0
+15-10-2020 02:18:13,SA5974AA,retail,Sillón,105,tienda-C,casa-C,0
+15-10-2020 02:18:13,SA2596NH,retail,Mesa,90,tienda-A,casa-S,0
+15-10-2020 02:18:13,SA7748JK,retail,Cama,115,tienda-B,casa-A,0
+15-10-2020 02:18:13,BE127,prioritario,Secador de pelo,15,pyme,casa-K,1
+15-10-2020 02:18:13,BE666,prioritario,Jabón para la ducha,8,pyme,casa-A,2
+15-10-2020 02:18:13,BE855,normal,Acondicionador,10,pyme,casa-A,3
+15-10-2020 02:18:13,BE654,normal,Shampoo,10,pyme,casa-D,4
+15-10-2020 02:18:13,BE785,prioritario,Crema para peinar,8,pyme,casa-E,5
+15-10-2020 02:18:13,PF654,prioritario,Placa madre,50,pyme,casa-B,6
+15-10-2020 02:18:13,PF125,normal,Procesador R,75,pyme,casa-N,7
+15-10-2020 02:18:13,PF111,prioritario,Ventilador,10,pyme,casa-N,8
+15-10-2020 02:18:13,PF245,normal,Gabinete,20,pyme,casa-S,9
+15-10-2020 02:18:13,PF225,prioritario,Fuente de poder,25,pyme,casa-P,10
+15-10-2020 02:18:13,PF354,normal,Memoria RAM,22,pyme,casa-R,11
+15-10-2020 02:18:13,PF542,normal,Procesador I,90,pyme,casa-N,12
+15-10-2020 02:18:13,PF452,prioritario,Tarjeta de video,115,pyme,casa-I,13
+15-10-2020 02:18:13,OF352,prioritario,Set de plumones,9,pyme,casa-C,14
+15-10-2020 02:18:13,OF754,normal,Cuadernos,5,pyme,casa-C,15
+15-10-2020 02:18:13,OF554,normal,Lapices,4,pyme,casa-I,16
+15-10-2020 02:18:13,DE123,normal,Zapatillas de futbol,16,pyme,casa-E,17
+15-10-2020 02:18:13,DE654,prioritario,Pelota de futbol,11,pyme,casa-V,18
+15-10-2020 02:18:13,DE786,prioritario,Raqueta de tenis,15,pyme,casa-Z,19
+15-10-2020 02:18:13,DE245,prioritario,Palo de golf,18,pyme,casa-Y,20
+15-10-2020 02:18:13,CC122,normal,Polera,9,pyme,casa-F,21
+15-10-2020 02:18:13,CC147,prioritario,Pantalón,11,pyme,casa-C,22
+15-10-2020 02:18:13,CC124,normal,Abrigo,17,pyme,casa-U,23
+15-10-2020 02:18:13,CC175,prioritario,Bufanda,6,pyme,casa-A,24
+15-10-2020 02:18:13,CC121,normal,Chaqueta,16,pyme,casa-X,25
+15-10-2020 02:18:13,CC147,prioritario,Sueter,14,pyme,casa-C,26
+15-10-2020 02:18:13,CC121,normal,Pantalón,10,pyme,casa-A,27
+15-10-2020 02:18:13,CC454,normal,Polera,7,pyme,casa-Q,28
+15-10-2020 02:18:13,GG257,normal,Pistachos: 200 g,4,pyme,casa-B,29
+15-10-2020 02:18:13,GG124,normal,Mani: 1 Kg,5,pyme,casa-A,30
+15-10-2020 02:18:13,GG568,normal,Almendras: 500 g,5,pyme,casa-L,31
+15-10-2020 02:18:13,GG301,normal,Chia: 500 g,6,pyme,casa-D,32
+15-10-2020 02:18:13,GG458,prioritario,Arroz: 1 Kg,3,pyme,casa-C,33
 2-10-2020 20:49:26,SA1554KF,retail,Polera,10,tienda-A,casa-A,0
 12-10-2020 20:49:26,SA1684AH,retail,Pantalón,12,tienda-B,casa-B,0
 12-10-2020 20:49:26,SA5698PO,retail,Televisor,110,tienda-C,casa-C,0

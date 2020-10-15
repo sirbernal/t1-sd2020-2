@@ -164,17 +164,13 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 }
 
 func (s *server) Camion(stream pb.CamionService_CamionServer) error {
-	
 	for {
-		req, err := stream.Recv()
+		_, err := stream.Recv()
 		if err != nil {
 			log.Fatalf("RPC failed: %v", err)
 		}
 
-		fmt.Println(req)
-
 		paquetes := CalcularEnvio()
-		
 		for _, paquete:= range paquetes {
 			fmt.Println(paquete)
 			resp := pb.CamionResponse{
@@ -186,23 +182,35 @@ func (s *server) Camion(stream pb.CamionService_CamionServer) error {
 				Estado: paquete.estado,	}
 			if err := stream.Send(&resp); err != nil {
 				log.Printf("send error %v", err)
+
+		/*if req.IdPaquete == ""{
+		
+			paquetes := CalcularEnvio()
+
+			for _, paquete:= range paquetes {
+				fmt.Println(paquete)
+				resp := pb.CamionResponse{
+					IdPaquete: paquete.IDpaquete,   
+					Seguimiento: paquete.seguimiento,
+					Tipo: paquete.tipo,        
+					Valor: paquete.valor,       
+					Intentos: paquete.intentos,    
+					Estado: paquete.estado,	}
+				if err := stream.Send(&resp); err != nil {
+					log.Printf("send error %v", err)
 			}
+		}*/
+
 			
-		}
-	}
+	
 		
 }
-
-func (s *server) Logistica(stream2 pb.CamionService_LogisticaServer) error { 
-	for {
-		req, err := stream2.Recv()
-		if err != nil {
-			log.Fatalf("RPC failed: %v", err)
-		}
-		fmt.Println(req.IdPaquete, req.Seguimiento, req.Tipo, req.Estado, req.Intentos)
-
+	}
 }
 }
+
+
+
 
 func main() {
 	fmt.Println("Servidor PrestigioExpress <Logistica> corriendo")

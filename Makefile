@@ -6,7 +6,7 @@ grpc:
 
 cliente_logistica: grpc
 	protoc --proto_path=. --go_out=plugins=grpc:proto proto/cliente_logistica.proto
-
+	protoc --proto_path=. --go_out=plugins=grpc:proto proto/camion_logistica.proto
 print:
 	echo "print"
 	

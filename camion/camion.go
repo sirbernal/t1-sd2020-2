@@ -94,7 +94,12 @@ func main() {
 	stream, err := client.Camion(context.Background())
 	waitc := make(chan struct{})
 
-	msg := &pb.CamionRequest{Status: "Listo para recibir los primeros paquetes" }
+	msg := &pb.CamionRequest{IdPaquete : "",
+		Seguimiento : -1,
+		Tipo :0,
+		Valor :  0,
+		Intentos : 0,
+		Estado : 0,}
 	go func() {
 		for i := 0; i < 1; i++ {
 		stream.Send(msg) }
@@ -108,13 +113,8 @@ func main() {
 	}()
 	//time.Sleep(10 * time.Second)
 	go func() {
-		stream2, err2 := client.Logistica(context.Background())
-		if err2 != nil {
-			log.Fatalf("Conn err2: %v", err)
-		}
 		npack:= 0
 		var resultado [6]Envio
-	
 		for {
 			resp, err := stream.Recv()
 			
@@ -138,73 +138,22 @@ func main() {
 				npack=0
 				resultado = simularEnvio(envios)
 				for _, pack := range resultado{
-					msg2 := &pb.LogisticaRequest{
+					msg2 := &pb.CamionRequest{
 						IdPaquete: pack.idPaquete,   
 						Seguimiento: pack.seguimiento,
 						Tipo: pack.tipo,        
 						Valor: pack.valor,       
 						Intentos: pack.intentos,    
 						Estado: pack.estado }
-					stream2.Send(msg2)
+					stream.Send(msg2)
 				}
 			}
-			msg := &pb.CamionRequest{Status: "Listo para seguir recibiendo mas paquetes" }
-			stream.Send(msg) 
 			time.Sleep(2 * time.Second)
 			//fmt.Println(envios)
-			
 		}
 
 
 	}()
-	go func() {
-		stream2, err2 := client.Logistica(context.Background())
-		npack:= 0
-		var resultado [6]Envio
-		if err2 != nil {
-			log.Fatalf("Conn err2: %v", err)
-		}
-		for {
-			resp, err := stream2.Recv()
-			fmt.Println(resp.IdPaquete)
-			fmt.Println(resp.Intentos)
-			fmt.Println(npack)
-			paquete := Envio{
-				idPaquete : resp.IdPaquete,
-				seguimiento : resp.Seguimiento,
-				tipo :resp.Tipo,
-				valor :  resp.Valor,
-				intentos : resp.Intentos,
-				estado : resp.Estado,
-			}
-			envios[npack]=paquete
-			if err != nil {
-				log.Fatalf("can not receive %v", err)
-			}
-			npack++
-			if npack>5{
-				npack=0
-				resultado = simularEnvio(envios)
-				for _, pack := range resultado{
-					msg2 := &pb.LogisticaRequest{
-						IdPaquete: pack.idPaquete,   
-						Seguimiento: pack.seguimiento,
-						Tipo: pack.tipo,        
-						Valor: pack.valor,       
-						Intentos: pack.intentos,    
-						Estado: pack.estado }
-					stream2.Send(msg2)
-				}
-			}
-			msg := &pb.CamionRequest{Status: "Listo para seguir recibiendo mas paquetes" }
-			stream.Send(msg) 
-			time.Sleep(2 * time.Second)
-			//fmt.Println(envios)
-			
-		}
-	}()
-
-
 	<-waitc
 	stream.CloseSend()
 }
