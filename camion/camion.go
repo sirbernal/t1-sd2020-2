@@ -8,6 +8,9 @@ import (
 	pb "github.com/sirbernal/t1-sd2020-2/proto/camion_logistica"
 	"google.golang.org/grpc"
 	"math/rand"
+	"strconv"
+	"os"
+	"encoding/csv"
 )
 
 const (
@@ -23,7 +26,78 @@ type Envio struct{
 	estado int64 //{En bodega, En camino, Recibido o No Recibido}={0,1,2,3}
 	fecha_entrega time.Time
 }
+var camionretail1 [][] string
+var camionretail2 [][] string
+var camionnormal [][] string
+func updateCamion(result [6]Envio){
+	for i,pack := range result{
+		if reflect.DeepEqual(pack,Envio{estado:1}){
+			continue
+		}
+		var tipo string
+		var archivo string
+		var fecha string
+		narch:=i/2
+		switch pack.tipo{
+		case 0:
+			tipo="normal"
+		case 1:
+			tipo="prioritario"
+		case 2:
+			tipo="retail"
+		default:
+			continue
+		}
+		if pack.fecha_entrega==(time.Time{}){
+			fecha="0"
+		}else{
+			fecha=pack.fecha_entrega.Format("02-01-2006 15:04:05")
+		}
+		linea:= []string{pack.idPaquete,tipo,
+			strconv.FormatInt(pack.valor,10), "origen", "destino",
+			strconv.FormatInt(pack.intentos,10),fecha}
+		switch narch{
+		case 0:
+			archivo="camionretail1.csv"
+			camionretail1=append(camionretail1,linea)
+			file,err:= os.OpenFile(archivo,os.O_CREATE|os.O_WRONLY,0777)
+			defer file.Close()
+			if err !=nil{
+				os.Exit(1)
+			}
+			csvWriter:= csv.NewWriter(file)
+			csvWriter.WriteAll(camionretail1)
+			csvWriter.Flush()
+		case 1:
+			archivo="camionretail2.csv"
+			camionretail2=append(camionretail1,linea)
+			file,err:= os.OpenFile(archivo,os.O_CREATE|os.O_WRONLY,0777)
+			defer file.Close()
+			if err !=nil{
+				os.Exit(1)
+			}
+			csvWriter:= csv.NewWriter(file)
+			csvWriter.WriteAll(camionretail2)
+			csvWriter.Flush()
+		case 2:
+			archivo="camionnormal.csv"
+			camionnormal=append(camionnormal,linea)
+			file,err:= os.OpenFile(archivo,os.O_CREATE|os.O_WRONLY,0777)
+			defer file.Close()
+			if err !=nil{
+				os.Exit(1)
+			}
+			csvWriter:= csv.NewWriter(file)
+			csvWriter.WriteAll(camionnormal)
+			csvWriter.Flush()
+		default:
+			continue
+		} 
 
+	}
+	
+
+}
 func menorEnvio(x Envio, y Envio)(Envio, Envio){
 	if x.valor>y.valor{
 		return x,y
@@ -74,7 +148,8 @@ func simularEnvio(env [6]Envio)[6]Envio{
 	cam1 = viaje(cam1)
 	cam2 = viaje(cam2)
 	cam3 = viaje(cam3)
-	resultado := [6]Envio{cam1[0], cam1[1], cam2[0], cam2[1], cam3[0], cam3[1]} 
+	resultado := [6]Envio{cam1[0], cam1[1], cam2[0], cam2[1], cam3[0], cam3[1]}
+	updateCamion(resultado)
 	return resultado
 
 }
@@ -118,8 +193,8 @@ func main() {
 		for {
 			resp, err := stream.Recv()
 			
-			fmt.Println(resp.IdPaquete)
-			fmt.Println(resp.Intentos)
+			//fmt.Println(resp.IdPaquete)
+			//fmt.Println(resp.Intentos)
 			fmt.Println(npack)
 			paquete := Envio{
 				idPaquete : resp.IdPaquete,
@@ -145,7 +220,7 @@ func main() {
 						Intentos: pack.intentos,    
 						Estado: pack.estado }
 					stream.Send(msg2)
-					time.Sleep(1 * time.Second)
+					time.Sleep(100 * time.Millisecond)
 				}
 				npack++
 			}
@@ -153,7 +228,7 @@ func main() {
 				stream.Send(msg)
 				npack=0
 			}
-			time.Sleep(2 * time.Second)
+			time.Sleep(100 * time.Millisecond)
 			//fmt.Println(envios)
 		}
 

@@ -27,7 +27,7 @@ type server struct {
 type Registro struct{
 	IDpaquete string
 	seguimiento int64
-	tipo int64
+	tipo int64 //0:normal 1: prioritario 2: retail q
 	valor int64
 	intentos int64
 	estado int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
@@ -41,7 +41,9 @@ var colaprioritario[] Registro
 var colanormal[] Registro
 var completados[] Registro
 
-
+func RemoveIndex(s []Registro, index int) []Registro {
+	return append(s[:index], s[index+1:]...)
+}
 func CalcularEnvio() [6]Registro{
 	var paqtruck [6]Registro
 	void := Registro{}
@@ -95,10 +97,40 @@ func CalcularEnvio() [6]Registro{
 	}
 	return paqtruck
 }
-//func recepcionCamion(rescam [6]Registro){
-//	for _,pack := range rescam{	
-//	}
-//}
+func recepcionCamion(rescam [6]Registro){
+	for _,pack := range rescam{
+		if reflect.DeepEqual(pack,Registro{estado:1}){
+			continue
+		}else{
+			completados=append(completados,pack)
+			switch pack.tipo{
+			case 0:
+				for i,j :=range colanormal{
+					if j.seguimiento==pack.seguimiento{
+						colanormal=RemoveIndex(colanormal,i)
+						break
+					}
+				}
+			case 1:
+				for i,j :=range colaprioritario{
+					if j.seguimiento==pack.seguimiento{
+						colaprioritario=RemoveIndex(colaprioritario,i)
+						break
+					}
+				}
+			case 2:
+				for i,j :=range colaretail{
+					if j.seguimiento==pack.seguimiento{
+						colaretail=RemoveIndex(colaretail,i)
+						break
+					}
+				}
+			default:
+				continue
+			}
+		}
+	}
+}
 func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
 	//fmt.Println(time.Now().Format("02-01-2006 15:04:05"),msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino(), msg.GetPrioritario(), numseg)
 	var tipo string
@@ -163,16 +195,18 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 }
 
 func (s *server) Camion(stream pb.CamionService_CamionServer) error {
+	recepcion:= [6]Registro{}
+	counterrecep:= 0
+	fmt.Println(recepcion)
 	for {
 		req, err := stream.Recv()
 		if err != nil {
 			log.Fatalf("RPC failed: %v", err)
 		}
-		//recepcion:= [6]Registro{}
-		//counterrecep:= 0
 		if req.Seguimiento != -1{
-			fmt.Println("Soy un paquete de verdad")
-			/*recepcion[counterrecep]=Registro{
+			//fmt.Println("Soy un paquete de verdad")
+			//fmt.Println(counterrecep)
+			recepcion[counterrecep]=Registro{
 				IDpaquete: req.IdPaquete,   
 				seguimiento: req.Seguimiento,
 				tipo: req.Tipo,        
@@ -180,14 +214,29 @@ func (s *server) Camion(stream pb.CamionService_CamionServer) error {
 				intentos: req.Intentos,    
 				estado: req.Estado,	
 			}
+			/*fmt.Println(Registro{
+				IDpaquete: req.IdPaquete,   
+				seguimiento: req.Seguimiento,
+				tipo: req.Tipo,        
+				valor: req.Valor,       
+				intentos: req.Intentos,    
+				estado: req.Estado,	
+			})*/
 			counterrecep++
-			if counterrecep==5{
+			if counterrecep==6{
 				counterrecep=0
-				//recepcionCamion(recepcion)
+				fmt.Println(recepcion)
+				recepcionCamion(recepcion)
 				recepcion=[6]Registro{}
-			}*/
+				fmt.Println(len(colaretail))
+				fmt.Println(len(colaprioritario))
+				fmt.Println(len(colanormal))
+				fmt.Println(len(completados))
+
+			}
 		}else{
-			fmt.Println("Paquetito fake")
+			//fmt.Println("Paquetito fake")
+			counterrecep=0
 			paquetes := CalcularEnvio()
 			for _, paquete:= range paquetes {
 				//fmt.Println(paquete)
