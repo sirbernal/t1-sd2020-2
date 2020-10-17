@@ -106,21 +106,21 @@ func recepcionCamion(rescam [6]Registro){
 			switch pack.tipo{
 			case 0:
 				for i,j :=range colanormal{
-					if j.seguimiento==pack.seguimiento{
+					if j.seguimiento==pack.seguimiento && j.IDpaquete==pack.IDpaquete && j.valor==pack.valor{
 						colanormal=RemoveIndex(colanormal,i)
 						break
 					}
 				}
 			case 1:
 				for i,j :=range colaprioritario{
-					if j.seguimiento==pack.seguimiento{
+					if j.seguimiento==pack.seguimiento && j.IDpaquete==pack.IDpaquete && j.valor==pack.valor{
 						colaprioritario=RemoveIndex(colaprioritario,i)
 						break
 					}
 				}
 			case 2:
 				for i,j :=range colaretail{
-					if j.seguimiento==pack.seguimiento{
+					if j.seguimiento==pack.seguimiento && j.IDpaquete==pack.IDpaquete && j.valor==pack.valor{
 						colaretail=RemoveIndex(colaretail,i)
 						break
 					}
@@ -130,6 +130,49 @@ func recepcionCamion(rescam [6]Registro){
 			}
 		}
 	}
+}
+func TranslateStatus(state int64)string{
+	switch state{
+	case 0:
+		return "En bodega"
+	case 1:
+		return "En Camino"
+	case 2:
+		return "Recibido"
+	case 3:
+		return "No Recibido"
+	default:
+		return ""
+	}
+}
+func BusquedaState(nseg int64)string{
+	if nseg==0{
+		return "Seguimiento no disponible en Retail"
+	}
+	for _,pack:= range completados{
+		if pack.seguimiento==nseg{
+			return TranslateStatus(pack.estado)
+		}
+	}
+	for _,pack:= range colaprioritario{
+		if pack.seguimiento==nseg{
+			return TranslateStatus(pack.estado)
+		}
+	}
+	for _,pack:= range colanormal{
+		if pack.seguimiento==nseg{
+			return TranslateStatus(pack.estado)
+		}
+	}
+	return "Número de seguimiento inexistente en sistema"
+}
+func BusquedaTruck(id string, nombre string, valor string, seguimiento string)string{
+	for _,j:= range fullreg{
+		if id==j[1] && nombre==j[3] && valor==j[4] && seguimiento==j[7]{
+			return j[5]+","+j[6]
+		}
+	}
+	return ""
 }
 func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
 	//fmt.Println(time.Now().Format("02-01-2006 15:04:05"),msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino(), msg.GetPrioritario(), numseg)
@@ -152,8 +195,10 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 		break
 	}
 	
-	linea:= []string{time.Now().Format("02-01-2006 15:04:05"),msg.GetId(),
-			tipo,msg.GetProducto(),strconv.FormatInt(msg.GetValor(),10),msg.GetTienda(),msg.GetDestino(),
+	linea:= []string{time.Now().Format("02-01-2006 15:04:05"),
+			msg.GetId(),tipo,msg.GetProducto(),
+			strconv.FormatInt(msg.GetValor(),10),
+			msg.GetTienda(),msg.GetDestino(),
 			strconv.FormatInt(seguimiento,10)} 
 	reg := Registro{
 		IDpaquete : msg.GetId(),
@@ -199,6 +244,8 @@ func (s *server) Camion(stream pb.CamionService_CamionServer) error {
 	counterrecep:= 0
 	fmt.Println(recepcion)
 	for {
+		//fmt.Println(BusquedaState(10))
+		//fmt.Println(BusquedaTruck("SA7748JK","Cama","115","0"))
 		req, err := stream.Recv()
 		if err != nil {
 			log.Fatalf("RPC failed: %v", err)

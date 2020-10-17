@@ -70,7 +70,7 @@ func updateCamion(result [6]Envio){
 			csvWriter.Flush()
 		case 1:
 			archivo="camionretail2.csv"
-			camionretail2=append(camionretail1,linea)
+			camionretail2=append(camionretail2,linea)
 			file,err:= os.OpenFile(archivo,os.O_CREATE|os.O_WRONLY,0777)
 			defer file.Close()
 			if err !=nil{
