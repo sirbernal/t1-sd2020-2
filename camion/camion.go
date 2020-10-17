@@ -30,6 +30,10 @@ type Envio struct{
 var camionretail1 [][] string
 var camionretail2 [][] string
 var camionnormal [][] string
+var tiempocamiones string
+var tiempocamionesint int
+var tiempoentrega string
+var tiempoentregaint int
 func updateCamion(result [6]Envio){
 	for i,pack := range result{
 		if reflect.DeepEqual(pack,Envio{estado:1}){
@@ -139,7 +143,6 @@ func viaje(env [2]Envio)[2]Envio{
 				break
 			}
 			if pac.tipo<2 && int64(x)*10>pac.valor{
-				fmt.Println("ta muy cara la weaita")
 				pac.estado=3
 				break
 			}
@@ -150,8 +153,6 @@ func viaje(env [2]Envio)[2]Envio{
 				pac.estado=2
 				pac.fecha_entrega=time.Now()
 				break
-			}else{
-				fmt.Println("wea mala falló")
 			}
 		}
 		env[i]=pac
@@ -175,7 +176,28 @@ func simularEnvio(env [6]Envio)[6]Envio{
 }
 
 func main() {
-	
+	fmt.Print("Inicializando servicio de reparto...\nIngrese tiempo (segundos) de espera de camiones:")
+	for{
+		fmt.Scanln(&tiempocamiones)
+		intmode, err:=strconv.Atoi(tiempocamiones)
+		if err!=nil{
+			fmt.Print("Formato no válido, ingrese nuevamente:")
+			continue
+		}
+		tiempocamionesint=intmode
+		break
+	}
+	fmt.Print("Ingrese tiempo (segundos) de demora de entregas:")
+	for{
+		fmt.Scanln(&tiempoentrega)
+		intmode, err:=strconv.Atoi(tiempoentrega)
+		if err!=nil{
+			fmt.Print("Formato no válido, ingrese nuevamente:")
+			continue
+		}
+		tiempoentregaint=intmode
+		break
+	}
 	//fmt.Println("Usuario del sistema PrestigioExpress, por favor ingresar el tiempo de envio de pedidos a logistica (en segundos): ")
 	//var tiempo int64
 	//fmt.Scanln(&tiempo)  
@@ -240,7 +262,7 @@ func main() {
 						Intentos: pack.intentos,    
 						Estado: pack.estado }
 					stream.Send(msg2)
-					time.Sleep(100 * time.Millisecond)
+					time.Sleep(time.Duration(tiempoentregaint*1000)*time.Millisecond)
 				}
 				npack++
 			}
@@ -248,7 +270,7 @@ func main() {
 				stream.Send(msg)
 				npack=0
 			}
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(time.Duration(tiempocamionesint*1000)*time.Millisecond)
 			//fmt.Println(envios)
 		}
 
