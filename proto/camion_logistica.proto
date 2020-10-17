@@ -25,6 +25,15 @@ message CamionResponse {
 
 }
 
+message DatosRequest {
+    string name = 1;
+}
+
+message DatosResponse {
+    string dato = 1;
+}
+
 service CamionService {
     rpc Camion (stream CamionRequest) returns (stream CamionResponse) {}
+    rpc DatosCamion (DatosRequest) returns (DatosResponse) {}
 }

@@ -163,6 +163,100 @@ func (x *EnvioResponse) GetMsg() string {
 	return ""
 }
 
+type SeguimientoRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Seguimiento string `protobuf:"bytes,1,opt,name=seguimiento,proto3" json:"seguimiento,omitempty"`
+}
+
+func (x *SeguimientoRequest) Reset() {
+	*x = SeguimientoRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_cliente_logistica_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SeguimientoRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SeguimientoRequest) ProtoMessage() {}
+
+func (x *SeguimientoRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_cliente_logistica_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SeguimientoRequest.ProtoReflect.Descriptor instead.
+func (*SeguimientoRequest) Descriptor() ([]byte, []int) {
+	return file_proto_cliente_logistica_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SeguimientoRequest) GetSeguimiento() string {
+	if x != nil {
+		return x.Seguimiento
+	}
+	return ""
+}
+
+type SeguimientoResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Estado string `protobuf:"bytes,1,opt,name=estado,proto3" json:"estado,omitempty"`
+}
+
+func (x *SeguimientoResponse) Reset() {
+	*x = SeguimientoResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_cliente_logistica_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SeguimientoResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SeguimientoResponse) ProtoMessage() {}
+
+func (x *SeguimientoResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_cliente_logistica_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SeguimientoResponse.ProtoReflect.Descriptor instead.
+func (*SeguimientoResponse) Descriptor() ([]byte, []int) {
+	return file_proto_cliente_logistica_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SeguimientoResponse) GetEstado() string {
+	if x != nil {
+		return x.Estado
+	}
+	return ""
+}
+
 var File_proto_cliente_logistica_proto protoreflect.FileDescriptor
 
 var file_proto_cliente_logistica_proto_rawDesc = []byte{
@@ -181,15 +275,27 @@ var file_proto_cliente_logistica_proto_rawDesc = []byte{
 	0x69, 0x74, 0x61, 0x72, 0x69, 0x6f, 0x18, 0x06, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0b, 0x70, 0x72,
 	0x69, 0x6f, 0x72, 0x69, 0x74, 0x61, 0x72, 0x69, 0x6f, 0x22, 0x21, 0x0a, 0x0d, 0x45, 0x6e, 0x76,
 	0x69, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73,
-	0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x32, 0x5c, 0x0a, 0x0c,
-	0x45, 0x6e, 0x76, 0x69, 0x6f, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x4c, 0x0a, 0x05,
-	0x45, 0x6e, 0x76, 0x69, 0x6f, 0x12, 0x1f, 0x2e, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x65, 0x5f,
-	0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x2e, 0x45, 0x6e, 0x76, 0x69, 0x6f, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x65,
-	0x5f, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x2e, 0x45, 0x6e, 0x76, 0x69, 0x6f,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x14, 0x5a, 0x12, 0x2f, 0x63,
-	0x6c, 0x69, 0x65, 0x6e, 0x74, 0x65, 0x5f, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x22, 0x36, 0x0a, 0x12,
+	0x53, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69, 0x65, 0x6e, 0x74, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x20, 0x0a, 0x0b, 0x73, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69, 0x65, 0x6e, 0x74,
+	0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x73, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69,
+	0x65, 0x6e, 0x74, 0x6f, 0x22, 0x2d, 0x0a, 0x13, 0x53, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69, 0x65,
+	0x6e, 0x74, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x65,
+	0x73, 0x74, 0x61, 0x64, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x65, 0x73, 0x74,
+	0x61, 0x64, 0x6f, 0x32, 0xbc, 0x01, 0x0a, 0x0c, 0x45, 0x6e, 0x76, 0x69, 0x6f, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x12, 0x4c, 0x0a, 0x05, 0x45, 0x6e, 0x76, 0x69, 0x6f, 0x12, 0x1f, 0x2e,
+	0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x65, 0x5f, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63,
+	0x61, 0x2e, 0x45, 0x6e, 0x76, 0x69, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20,
+	0x2e, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x65, 0x5f, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69,
+	0x63, 0x61, 0x2e, 0x45, 0x6e, 0x76, 0x69, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x00, 0x12, 0x5e, 0x0a, 0x0b, 0x53, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69, 0x65, 0x6e, 0x74,
+	0x6f, 0x12, 0x25, 0x2e, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x65, 0x5f, 0x6c, 0x6f, 0x67, 0x69,
+	0x73, 0x74, 0x69, 0x63, 0x61, 0x2e, 0x53, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69, 0x65, 0x6e, 0x74,
+	0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x63, 0x6c, 0x69, 0x65, 0x6e,
+	0x74, 0x65, 0x5f, 0x6c, 0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x2e, 0x53, 0x65, 0x67,
+	0x75, 0x69, 0x6d, 0x69, 0x65, 0x6e, 0x74, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x00, 0x42, 0x14, 0x5a, 0x12, 0x2f, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x65, 0x5f, 0x6c,
+	0x6f, 0x67, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -204,16 +310,20 @@ func file_proto_cliente_logistica_proto_rawDescGZIP() []byte {
 	return file_proto_cliente_logistica_proto_rawDescData
 }
 
-var file_proto_cliente_logistica_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_proto_cliente_logistica_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_proto_cliente_logistica_proto_goTypes = []interface{}{
-	(*EnvioRequest)(nil),  // 0: cliente_logistica.EnvioRequest
-	(*EnvioResponse)(nil), // 1: cliente_logistica.EnvioResponse
+	(*EnvioRequest)(nil),        // 0: cliente_logistica.EnvioRequest
+	(*EnvioResponse)(nil),       // 1: cliente_logistica.EnvioResponse
+	(*SeguimientoRequest)(nil),  // 2: cliente_logistica.SeguimientoRequest
+	(*SeguimientoResponse)(nil), // 3: cliente_logistica.SeguimientoResponse
 }
 var file_proto_cliente_logistica_proto_depIdxs = []int32{
 	0, // 0: cliente_logistica.EnvioService.Envio:input_type -> cliente_logistica.EnvioRequest
-	1, // 1: cliente_logistica.EnvioService.Envio:output_type -> cliente_logistica.EnvioResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	2, // 1: cliente_logistica.EnvioService.Seguimiento:input_type -> cliente_logistica.SeguimientoRequest
+	1, // 2: cliente_logistica.EnvioService.Envio:output_type -> cliente_logistica.EnvioResponse
+	3, // 3: cliente_logistica.EnvioService.Seguimiento:output_type -> cliente_logistica.SeguimientoResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -249,6 +359,30 @@ func file_proto_cliente_logistica_proto_init() {
 				return nil
 			}
 		}
+		file_proto_cliente_logistica_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SeguimientoRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_cliente_logistica_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SeguimientoResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -256,7 +390,7 @@ func file_proto_cliente_logistica_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_cliente_logistica_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -283,6 +417,7 @@ const _ = grpc.SupportPackageIsVersion6
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type EnvioServiceClient interface {
 	Envio(ctx context.Context, in *EnvioRequest, opts ...grpc.CallOption) (*EnvioResponse, error)
+	Seguimiento(ctx context.Context, in *SeguimientoRequest, opts ...grpc.CallOption) (*SeguimientoResponse, error)
 }
 
 type envioServiceClient struct {
@@ -302,9 +437,19 @@ func (c *envioServiceClient) Envio(ctx context.Context, in *EnvioRequest, opts .
 	return out, nil
 }
 
+func (c *envioServiceClient) Seguimiento(ctx context.Context, in *SeguimientoRequest, opts ...grpc.CallOption) (*SeguimientoResponse, error) {
+	out := new(SeguimientoResponse)
+	err := c.cc.Invoke(ctx, "/cliente_logistica.EnvioService/Seguimiento", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EnvioServiceServer is the server API for EnvioService service.
 type EnvioServiceServer interface {
 	Envio(context.Context, *EnvioRequest) (*EnvioResponse, error)
+	Seguimiento(context.Context, *SeguimientoRequest) (*SeguimientoResponse, error)
 }
 
 // UnimplementedEnvioServiceServer can be embedded to have forward compatible implementations.
@@ -313,6 +458,9 @@ type UnimplementedEnvioServiceServer struct {
 
 func (*UnimplementedEnvioServiceServer) Envio(context.Context, *EnvioRequest) (*EnvioResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Envio not implemented")
+}
+func (*UnimplementedEnvioServiceServer) Seguimiento(context.Context, *SeguimientoRequest) (*SeguimientoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Seguimiento not implemented")
 }
 
 func RegisterEnvioServiceServer(s *grpc.Server, srv EnvioServiceServer) {
@@ -337,6 +485,24 @@ func _EnvioService_Envio_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EnvioService_Seguimiento_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SeguimientoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EnvioServiceServer).Seguimiento(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cliente_logistica.EnvioService/Seguimiento",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EnvioServiceServer).Seguimiento(ctx, req.(*SeguimientoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _EnvioService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "cliente_logistica.EnvioService",
 	HandlerType: (*EnvioServiceServer)(nil),
@@ -344,6 +510,10 @@ var _EnvioService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Envio",
 			Handler:    _EnvioService_Envio_Handler,
+		},
+		{
+			MethodName: "Seguimiento",
+			Handler:    _EnvioService_Seguimiento_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

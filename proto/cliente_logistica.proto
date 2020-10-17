@@ -17,8 +17,16 @@ message EnvioResponse{
     string msg = 1;
 }
 
+message SeguimientoRequest {
+    string seguimiento = 1;
+}
+
+message SeguimientoResponse {
+    string estado = 1;
+}
 
 service EnvioService {
     rpc Envio (EnvioRequest) returns (EnvioResponse) {}
+    rpc Seguimiento (SeguimientoRequest) returns (SeguimientoResponse) {}
   
 }

@@ -14,7 +14,8 @@ import (
 )
 
 const (
-	dire = "10.10.28.82:50051"
+	//10.10.28.82
+	dire = "localhost:50051"
 )
 
 type Envio struct{
@@ -117,6 +118,25 @@ func main() {
 			fmt.Println("Codigo de seguimiento: "+r.GetMsg())
 
 		}
+
+		
+	}
+	for {
+		fmt.Println(" Ingrese codigo de seguimiento:  ")
+		var seguimiento string
+		fmt.Scanln(&seguimiento)
+		c := cl.NewEnvioServiceClient(conn)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+
+		seg := &cl.SeguimientoRequest{
+			Seguimiento: seguimiento,
+		}
+
+		r, _ := c.Seguimiento(ctx, seg)
+
+		fmt.Println("Estado del pedido: ", r.GetEstado())
+		fmt.Println("")
 	}
 
 

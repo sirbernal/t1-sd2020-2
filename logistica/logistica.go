@@ -10,6 +10,7 @@ import (
 	"os"
 	"encoding/csv"
 	"reflect"
+	"strings"
 	cl "github.com/sirbernal/t1-sd2020-2/proto/cliente_logistica"
 	pb "github.com/sirbernal/t1-sd2020-2/proto/camion_logistica"
 	grpc "google.golang.org/grpc"
@@ -166,14 +167,15 @@ func BusquedaState(nseg int64)string{
 	}
 	return "Número de seguimiento inexistente en sistema"
 }
-func BusquedaTruck(id string, nombre string, valor string, seguimiento string)string{
+func BusquedaTruck(id string, valor string, seguimiento string)string{
 	for _,j:= range fullreg{
-		if id==j[1] && nombre==j[3] && valor==j[4] && seguimiento==j[7]{
+		if id==j[1] && valor==j[4] && seguimiento==j[7]{
 			return j[5]+","+j[6]
 		}
 	}
 	return ""
 }
+
 func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResponse, error){
 	//fmt.Println(time.Now().Format("02-01-2006 15:04:05"),msg.GetId(), msg.GetProducto(), msg.GetValor(), msg.GetTienda(), msg.GetDestino(), msg.GetPrioritario(), numseg)
 	var tipo string
@@ -303,7 +305,24 @@ func (s *server) Camion(stream pb.CamionService_CamionServer) error {
 	}
 }
 
+func (s *server) Seguimiento(ctx context.Context, msg *cl.SeguimientoRequest) (*cl.SeguimientoResponse, error){
+	a, _ := strconv.Atoi(msg.GetSeguimiento())
+	estado := BusquedaState(int64(a))
+	return &cl.SeguimientoResponse {
+		Estado: estado,
+	}, nil
+}
 
+func (s *server) DatosCamion(ctx context.Context, msg *pb.DatosRequest) (*pb.DatosResponse, error){
+
+	name := msg.GetName()
+	n := strings.Split(name,",")
+	
+	return &pb.DatosResponse {
+		Dato: BusquedaTruck(n[0],n[1],n[2]),
+	}, nil
+
+}
 
 
 

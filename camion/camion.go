@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 	"reflect"
+	"strings"
 	pb "github.com/sirbernal/t1-sd2020-2/proto/camion_logistica"
 	"google.golang.org/grpc"
 	"math/rand"
@@ -14,7 +15,7 @@ import (
 )
 
 const (
-	dire = "10.10.28.82:50051"
+	dire = "localhost:50051"
 )
 
 type Envio struct{
@@ -53,8 +54,27 @@ func updateCamion(result [6]Envio){
 		}else{
 			fecha=pack.fecha_entrega.Format("02-01-2006 15:04:05")
 		}
+
+		conn, err := grpc.Dial(dire, grpc.WithInsecure())
+		
+		if err != nil {
+			log.Fatalf("Conn err: %v", err)
+		}
+
+		c := pb.NewCamionServiceClient(conn)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+
+		seg := &pb.DatosRequest{
+			Name: pack.idPaquete+","+strconv.FormatInt(pack.valor,10)+","+strconv.FormatInt(pack.seguimiento,10),
+		}
+
+		r, _ := c.DatosCamion(ctx, seg)
+
+		resp := strings.Split(r.GetDato(),",")
+
 		linea:= []string{pack.idPaquete,tipo,
-			strconv.FormatInt(pack.valor,10), "origen", "destino",
+			strconv.FormatInt(pack.valor,10), resp[0], resp[1],
 			strconv.FormatInt(pack.intentos,10),fecha}
 		switch narch{
 		case 0:
