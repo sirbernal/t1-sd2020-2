@@ -23,17 +23,16 @@ const (
 )
 
 
-
 type server struct {
 }
 
 type Registro struct{
 	IDpaquete string
-	seguimiento int64
-	tipo int64 //0:normal 1: prioritario 2: retail q
-	valor int64
-	intentos int64
-	estado int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
+	seguimiento int
+	tipo int //0:normal 1: prioritario 2: retail q
+	valor int
+	intentos int
+	estado int//0: En bodega 1: En Camino 2: Recibido 3: No Recibido
 }
 
 
