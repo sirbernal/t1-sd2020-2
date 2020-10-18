@@ -354,12 +354,12 @@ func Holamundo(){
 	  
 	//body := "Hello World!"
 
-	registro := Registro{"",1,0,10,1,2}
+	reg:= Registro{"",1,0,10,1,2}
 
-	body, _ := json.Marshal(registro)
+	body, _ := json.Marshal(reg)
 	
 	fmt.Println(string(body))
-	
+
 	err = ch.Publish(
 		"",     // exchange
 		q.Name, // routing key
