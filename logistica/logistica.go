@@ -357,9 +357,6 @@ func Holamundo(){
 	registro := Registro{"",1,0,10,1,2}
 
 	body, _ := json.Marshal(registro)
-
-	fmt.Println(body == []byte(`{"IDpaquete":"","seguimiento": 1,"tipo":0, "valor": 10, "intentos": 1, "estado": 2}`))
-
 	
 	err = ch.Publish(
 		"",     // exchange
@@ -368,7 +365,7 @@ func Holamundo(){
 		false,  // immediate
 		amqp.Publishing {
 		  ContentType: "application/json",
-		  Body:        body, //[]byte(body)
+		  Body:        []byte(body), //[]byte(body)
 		})
 	failOnError(err, "Failed to publish a message")
 
