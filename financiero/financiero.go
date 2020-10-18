@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
+	  
+    "github.com/streadway/amqp"
 /*	"context"
 	"log"
 	"net"
@@ -15,6 +18,7 @@ import (
 	pb "github.com/sirbernal/t1-sd2020-2/proto/camion_logistica"
 	grpc "google.golang.org/grpc"*/
 )
+
 type Registro struct{
 	IDpaquete string
 	seguimiento int64
@@ -52,7 +56,61 @@ func CalculoFinanza(){
 	total=ganancia-perdida
 }
 
+func failOnError(err error, msg string) {
+	if err != nil {
+	  log.Fatalf("%s: %s", msg, err)
+	}
+}
+
+func PrintHolamundo(){
+	conn, err := amqp.Dial("amqp://mqadmin:mqadminpassword@localhost:5672/")
+	failOnError(err, "Failed to connect to RabbitMQ")
+	defer conn.Close()
+
+	ch, err := conn.Channel()
+	failOnError(err, "Failed to open a channel")
+	defer ch.Close()
+
+	q, err := ch.QueueDeclare(
+	"hello", // name
+	false,   // durable
+	false,   // delete when unused
+	false,   // exclusive
+	false,   // no-wait
+	nil,     // arguments
+	)
+	failOnError(err, "Failed to declare a queue")
+
+
+	msgs, err := ch.Consume(
+		q.Name, // queue
+		"",     // consumer
+		true,   // auto-ack
+		false,  // exclusive
+		false,  // no-local
+		false,  // no-wait
+		nil,    // args
+	)
+
+	failOnError(err, "Failed to register a consumer")
+	  
+	forever := make(chan bool)
+	  
+	go func() {
+		for d := range msgs {
+			log.Printf("Received a message: %s", d.Body)
+		}
+	  }()
+	  
+	  log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
+	  <-forever
+
+
+}
+
 func main(){
+
+	PrintHolamundo()
 	recibidos=append(recibidos,Registro{"",1,0,10,1,2},
 		Registro{"",2,1,30,3,3},Registro{"",3,2,40,2,2})
 	CalculoFinanza()

@@ -14,6 +14,7 @@ import (
 	cl "github.com/sirbernal/t1-sd2020-2/proto/cliente_logistica"
 	pb "github.com/sirbernal/t1-sd2020-2/proto/camion_logistica"
 	grpc "google.golang.org/grpc"
+	"github.com/streadway/amqp"
 )
 
 const (
@@ -324,6 +325,41 @@ func (s *server) DatosCamion(ctx context.Context, msg *pb.DatosRequest) (*pb.Dat
 
 }
 
+func failOnError(err error, msg string) {
+	if err != nil {
+	  log.Fatalf("%s: %s", msg, err)
+	}
+  }
+
+func Holamundo(){
+	
+	conn, err := amqp.Dial("amqp://mqadmin:mqadminpassword@10.10.28.84:5672/")
+	failOnError(err, "Failed to connect to RabbitMQ")
+	defer conn.Close()
+
+	q, err := ch.QueueDeclare(
+		"hello", // name
+		false,   // durable
+		false,   // delete when unused
+		false,   // exclusive
+		false,   // no-wait
+		nil,     // arguments
+	)
+	failOnError(err, "Failed to declare a queue")
+	  
+	body := "Hello World!"
+	err = ch.Publish(
+		"",     // exchange
+		q.Name, // routing key
+		false,  // mandatory
+		false,  // immediate
+		amqp.Publishing {
+		  ContentType: "text/plain",
+		  Body:        []byte(body),
+		})
+	failOnError(err, "Failed to publish a message")
+
+}
 
 
 func main() {
@@ -333,9 +369,9 @@ func main() {
 		log.Fatal("Error conectando: %v", err)
 	}
 
-	s := grpc.NewServer()
-
-	//cl.RegisterSeguimientoServiceServer(s, &server{})
+	s := grpc.NewServer() */
+	Holamundo()
+	cl.RegisterSeguimientoServiceServer(s, &server{})
 	pb.RegisterCamionServiceServer(s, &server{})
 	cl.RegisterEnvioServiceServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
