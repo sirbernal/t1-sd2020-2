@@ -358,8 +358,9 @@ func Holamundo(){
 
 	body, _ := json.Marshal(registro)
 
-	fmt.Printf(string(body))
+	fmt.Println(body == []byte(`{"IDpaquete":"","seguimiento": 1,"tipo":0, "valor": 10, "intentos": 1, "estado": 2}`))
 
+	
 	err = ch.Publish(
 		"",     // exchange
 		q.Name, // routing key
