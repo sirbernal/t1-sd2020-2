@@ -336,6 +336,10 @@ func Holamundo(){
 	conn, err := amqp.Dial("amqp://mqadmin:mqadminpassword@10.10.28.84:5672/")
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
+	
+	ch, err := conn.Channel()
+	failOnError(err, "Failed to open a channel")
+	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
 		"hello", // name
