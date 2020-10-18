@@ -10,15 +10,15 @@ cliente_logistica: grpc
 print:
 	echo "print"
 
-cliente:
+run cliente:
 	cd cliente
 	go run cliente.go	
 
-logistica:
+run logistica:
 	go run logistica/logistica.go
 
-camion:
+run camion:
 	go run camion/camion.go		
 
-financiero:
+run financiero:
 	go run financiero/financiero.go	
