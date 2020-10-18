@@ -23,10 +23,20 @@ const (
 )
 
 
+
 type server struct {
 }
 
 type Registro struct{
+	IDpaquete string
+	seguimiento int64
+	tipo int64 //0:normal 1: prioritario 2: retail q
+	valor int64
+	intentos int64
+	estado int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
+}
+
+type Registro2 struct{
 	IDpaquete string
 	seguimiento int
 	tipo int //0:normal 1: prioritario 2: retail q
@@ -353,7 +363,7 @@ func Holamundo(){
 	  
 	//body := "Hello World!"
 
-	reg:= Registro{"a",1,0,10,1,2}
+	reg:= Registro2{"a",1,0,10,1,2}
 
 	fmt.Println(reg)
 	body, _ := json.Marshal(reg)
