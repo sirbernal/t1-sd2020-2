@@ -5,14 +5,15 @@ import (
 	"log"
 	"encoding/json"
 	"reflect"
-    "github.com/streadway/amqp"
+	"github.com/streadway/amqp"
+	"encoding/csv"
+	"os"
+	"strconv"
 /*	"context"
 	"log"
 	"net"
 	
 	"time"
-	"strconv"
-	"os"
 	"encoding/csv"
 	
 	cl "github.com/sirbernal/t1-sd2020-2/proto/cliente_logistica"
@@ -32,32 +33,59 @@ type Registro struct{
 
 
 var recibidos []Registro
+var resumen [][]string
 var ganancia int64
 var perdida int64
 var total int64
+func EscribirArchivoFinanza(){
+	archivo:="resumenfinanzas.csv"
+	file,err:= os.OpenFile(archivo,os.O_CREATE|os.O_WRONLY,0777)
+	defer file.Close()
+	if err !=nil{
+		os.Exit(1)
+	}
+	csvWriter:= csv.NewWriter(file)
+	csvWriter.WriteAll(resumen)
+	csvWriter.Flush()
+	
+}
 func CalculoFinanza(){
+	var resumentemp [][]string
+	resumentemp=append(resumentemp,[]string{"Id Paquete","Estado","Intentos","Ganancia","Perdida"})
 	ganancia =0
 	perdida =0
 	total =0
 	for _,pack :=range recibidos{
+		var gananciapack int64
+		var perdidapack int64
+		var state string
 		if pack.Estado==2{
 			ganancia+=pack.Valor
+			gananciapack+=pack.Valor
+			state="Envío Completado"
 		}else if pack.Estado==3{
+			state="Envío no Entregado"
 			switch pack.Tipo{
 			case 0:
 			case 1:
 				ganancia+=int64(float64(pack.Valor)*(0.3))
+				gananciapack+=int64(float64(pack.Valor)*(0.3))
 			case 2:
 				ganancia+=pack.Valor
+				gananciapack+=pack.Valor
 			default:
 				continue
 			}
 		}
 		if pack.Intentos>1{
 			perdida+=(10*(pack.Intentos-1))
+			perdidapack+=(10*(pack.Intentos-1))
 		}
-		fmt.Println(ganancia,perdida,total)
-	}	
+		linea:=[]string{pack.IDpaquete,state,strconv.FormatInt(pack.Intentos,10),strconv.FormatInt(gananciapack,10),strconv.FormatInt(perdidapack,10)}
+		resumentemp=append(resumentemp,linea)
+		//fmt.Println(ganancia,perdida,total)
+	}
+	resumen=resumentemp
 	total=ganancia-perdida
 }
 
@@ -112,6 +140,7 @@ func RecepcionLogistica(){
 			fmt.Println(m)
 			if reflect.DeepEqual(m,Registro{}){
 				CalculoFinanza()
+				EscribirArchivoFinanza()
 				fmt.Println(ganancia,perdida,total)
 			}
 			recibidos=append(recibidos,m)
@@ -125,6 +154,4 @@ func RecepcionLogistica(){
 func main(){
 
 	RecepcionLogistica()
-	fmt.Println(recibidos)
-	fmt.Println(ganancia,perdida,total)
 }

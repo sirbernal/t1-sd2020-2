@@ -11,8 +11,8 @@ print:
 	echo "print"
 
 runcliente:
-	cd cliente
-	go run cliente.go	
+	cd cliente && \
+    go run cliente.go
 
 runlogistica:
 	go run logistica/logistica.go
