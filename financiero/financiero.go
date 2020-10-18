@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"encoding/json"
 	  
     "github.com/streadway/amqp"
 /*	"context"
@@ -102,7 +103,7 @@ func PrintHolamundo(){
 
 			var m Registro
 
-			_ := json.Unmarshal(d.Body, &m)
+			err := json.Unmarshal(d.Body, &m)
 
 			fmt.Println(m)
 		}
