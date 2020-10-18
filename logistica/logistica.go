@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"os"
 	"encoding/csv"
+	"encoding/json"
 	"reflect"
 	"strings"
 	cl "github.com/sirbernal/t1-sd2020-2/proto/cliente_logistica"
@@ -351,7 +352,12 @@ func Holamundo(){
 	)
 	failOnError(err, "Failed to declare a queue")
 	  
-	body := "Hello World!"
+	//body := "Hello World!"
+
+	registro := Registro{"",1,0,10,1,2}
+
+	body, _ := json.Marshal(registro)
+
 	err = ch.Publish(
 		"",     // exchange
 		q.Name, // routing key
@@ -359,7 +365,7 @@ func Holamundo(){
 		false,  // immediate
 		amqp.Publishing {
 		  ContentType: "text/plain",
-		  Body:        []byte(body),
+		  Body:        body, //[]byte(body)
 		})
 	failOnError(err, "Failed to publish a message")
 

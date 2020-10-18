@@ -99,6 +99,12 @@ func PrintHolamundo(){
 	go func() {
 		for d := range msgs {
 			log.Printf("Received a message: %s", d.Body)
+
+			var m Registro
+
+			_ := json.Unmarshal(d.Body, &m)
+
+			fmt.Println(m)
 		}
 	  }()
 	  
