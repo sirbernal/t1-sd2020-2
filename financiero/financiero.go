@@ -103,7 +103,7 @@ func PrintHolamundo(){
 
 			var m Registro
 
-			err := json.Unmarshal(d.Body, &m)
+			_ = json.Unmarshal(d.Body, &m)
 
 			fmt.Println(m)
 		}
