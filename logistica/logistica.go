@@ -358,13 +358,15 @@ func Holamundo(){
 
 	body, _ := json.Marshal(registro)
 
+	fmt.Printf(body)
+
 	err = ch.Publish(
 		"",     // exchange
 		q.Name, // routing key
 		false,  // mandatory
 		false,  // immediate
 		amqp.Publishing {
-		  ContentType: "text/plain",
+		  ContentType: "application/json",
 		  Body:        body, //[]byte(body)
 		})
 	failOnError(err, "Failed to publish a message")
