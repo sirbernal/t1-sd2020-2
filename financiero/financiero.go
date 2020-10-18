@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"encoding/json"
-	  
+	"reflect"
     "github.com/streadway/amqp"
 /*	"context"
 	"log"
@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"os"
 	"encoding/csv"
-	"reflect"
+	
 	cl "github.com/sirbernal/t1-sd2020-2/proto/cliente_logistica"
 	pb "github.com/sirbernal/t1-sd2020-2/proto/camion_logistica"
 	grpc "google.golang.org/grpc"*/
@@ -110,6 +110,10 @@ func RecepcionLogistica(){
 			_ = json.Unmarshal(d.Body, &m)
 
 			fmt.Println(m)
+			if reflect.DeepEqual(m,Registro{}){
+				CalculoFinanza()
+				fmt.Println(ganancia,perdida,total)
+			}
 			recibidos=append(recibidos,m)
 		}
 	  }()
@@ -121,7 +125,6 @@ func RecepcionLogistica(){
 func main(){
 
 	RecepcionLogistica()
-	CalculoFinanza()
 	fmt.Println(recibidos)
 	fmt.Println(ganancia,perdida,total)
 }

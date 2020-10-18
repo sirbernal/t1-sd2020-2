@@ -144,6 +144,9 @@ func recepcionCamion(rescam [6]Registro){
 			PackageToFinanciero(pack)
 		}
 	}
+	if len(colanormal)+len(colaprioritario)+len(colaretail)==0{
+		PackageToFinanciero(Registro{})
+	}
 }
 func TranslateStatus(state int64)string{
 	switch state{
