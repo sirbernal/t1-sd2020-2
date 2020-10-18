@@ -369,7 +369,7 @@ func main() {
 		log.Fatal("Error conectando: %v", err)
 	}
 
-	s := grpc.NewServer() */
+	s := grpc.NewServer()
 	Holamundo()
 	cl.RegisterSeguimientoServiceServer(s, &server{})
 	pb.RegisterCamionServiceServer(s, &server{})
