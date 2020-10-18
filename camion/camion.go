@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	dire = "localhost:50051"
+	dire = "10.10.28.82:50051"
 )
 
 type Envio struct{

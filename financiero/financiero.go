@@ -29,23 +29,16 @@ type Registro struct{
 	Estado int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
 }
 
-type Registro2 struct{
-	IDpaquete string
-	Seguimiento int64
-	Tipo int64 //0:normal 1: prioritario 2: retail q
-	Valor int64
-	Intentos int64
-	Estado int64//0: En bodega 1: En Camino 2: Recibido 3: No Recibido
-}
+
 
 var recibidos []Registro
 var ganancia int64
 var perdida int64
 var total int64
 func CalculoFinanza(){
-	var ganancia =0
-	var perdida =0
-	var total =0
+	ganancia =0
+	perdida =0
+	total =0
 	for _,pack :=range recibidos{
 		if pack.Estado==2{
 			ganancia+=pack.Valor
@@ -60,8 +53,8 @@ func CalculoFinanza(){
 				continue
 			}
 		}
-		if pack.intentos>1{
-			perdida+=(10*(pack.intentos-1))
+		if pack.Intentos>1{
+			perdida+=(10*(pack.Intentos-1))
 		}
 		fmt.Println(ganancia,perdida,total)
 	}	
