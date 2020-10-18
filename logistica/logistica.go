@@ -354,7 +354,7 @@ func Holamundo(){
 	  
 	//body := "Hello World!"
 
-	reg:= Registro{"",1,0,10,1,2}
+	reg:= Registro{"a",1,0,10,1,2}
 
 	fmt.Println(reg)
 	body, _ := json.Marshal(reg)
