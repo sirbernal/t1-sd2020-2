@@ -9,4 +9,16 @@ cliente_logistica: grpc
 	protoc --proto_path=. --go_out=plugins=grpc:proto proto/camion_logistica.proto
 print:
 	echo "print"
-	
+
+cliente:
+	cd cliente
+	go run cliente.go	
+
+logistica:
+	go run logistica/logistica.go
+
+camion:
+	go run camion/camion.go		
+
+financiero:
+	go run financiero/financiero.go	
