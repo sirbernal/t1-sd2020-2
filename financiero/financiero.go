@@ -22,20 +22,20 @@ import (
 
 type Registro struct{
 	IDpaquete string
-	seguimiento int64
-	tipo int64 //0:normal 1: prioritario 2: retail q
-	valor int64
-	intentos int64
-	estado int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
+	Seguimiento int64
+	Tipo int64 //0:normal 1: prioritario 2: retail q
+	Valor int64
+	Intentos int64
+	Estado int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
 }
 
 type Registro2 struct{
 	IDpaquete string
-	Seguimiento int
-	Tipo int //0:normal 1: prioritario 2: retail q
-	Valor int
-	Intentos int
-	Estado int//0: En bodega 1: En Camino 2: Recibido 3: No Recibido
+	Seguimiento int64
+	Tipo int64 //0:normal 1: prioritario 2: retail q
+	Valor int64
+	Intentos int64
+	Estado int64//0: En bodega 1: En Camino 2: Recibido 3: No Recibido
 }
 
 var recibidos []Registro
@@ -43,16 +43,19 @@ var ganancia int64
 var perdida int64
 var total int64
 func CalculoFinanza(){
+	var ganancia =0
+	var perdida =0
+	var total =0
 	for _,pack :=range recibidos{
-		if pack.estado==2{
-			ganancia+=pack.valor
-		}else if pack.estado==3{
-			switch pack.tipo{
+		if pack.Estado==2{
+			ganancia+=pack.Valor
+		}else if pack.Estado==3{
+			switch pack.Tipo{
 			case 0:
 			case 1:
-				ganancia+=int64(float64(pack.valor)*(0.3))
+				ganancia+=int64(float64(pack.Valor)*(0.3))
 			case 2:
-				ganancia+=pack.valor
+				ganancia+=pack.Valor
 			default:
 				continue
 			}
@@ -61,8 +64,7 @@ func CalculoFinanza(){
 			perdida+=(10*(pack.intentos-1))
 		}
 		fmt.Println(ganancia,perdida,total)
-	}
-	
+	}	
 	total=ganancia-perdida
 }
 
@@ -72,7 +74,7 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func PrintHolamundo(){
+func RecepcionLogistica(){
 	conn, err := amqp.Dial("amqp://mqadmin:mqadminpassword@localhost:5672/")
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
@@ -110,25 +112,22 @@ func PrintHolamundo(){
 		for d := range msgs {
 			log.Printf("Received a message: %s", d.Body)
 
-			var m Registro2
+			var m Registro
 
 			_ = json.Unmarshal(d.Body, &m)
 
 			fmt.Println(m)
+			recibidos=append(recibidos,m)
 		}
 	  }()
 	  
 	  log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
 	  <-forever
-
-
 }
 
 func main(){
 
-	PrintHolamundo()
-	recibidos=append(recibidos,Registro{"",1,0,10,1,2},
-		Registro{"",2,1,30,3,3},Registro{"",3,2,40,2,2})
+	RecepcionLogistica()
 	CalculoFinanza()
 	fmt.Println(recibidos)
 	fmt.Println(ganancia,perdida,total)

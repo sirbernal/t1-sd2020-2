@@ -38,11 +38,11 @@ type Registro struct{
 
 type Registro2 struct{
 	IDpaquete string
-	Seguimiento int
-	Tipo int //0:normal 1: prioritario 2: retail q
-	Valor int
-	Intentos int
-	Estado int//0: En bodega 1: En Camino 2: Recibido 3: No Recibido
+	Seguimiento int64
+	Tipo int64 //0:normal 1: prioritario 2: retail q
+	Valor int64
+	Intentos int64
+	Estado int64//0: En bodega 1: En Camino 2: Recibido 3: No Recibido
 }
 
 
@@ -56,6 +56,7 @@ var completados[] Registro
 func RemoveIndex(s []Registro, index int) []Registro {
 	return append(s[:index], s[index+1:]...)
 }
+
 func CalcularEnvio() [6]Registro{
 	var paqtruck [6]Registro
 	void := Registro{}
@@ -140,6 +141,7 @@ func recepcionCamion(rescam [6]Registro){
 			default:
 				continue
 			}
+			PackageToFinanciero(pack)
 		}
 	}
 }
@@ -339,9 +341,20 @@ func failOnError(err error, msg string) {
 	if err != nil {
 	  log.Fatalf("%s: %s", msg, err)
 	}
-  }
+}
+func RegtoReg2(r Registro)Registro2{
+	r2:= Registro2{
+		IDpaquete : r.IDpaquete,
+		Seguimiento : r.seguimiento,
+		Tipo: r.tipo,
+		Valor: r.valor,
+		Intentos: r.intentos,
+		Estado: r.estado,
+	}
+	return r2
+}
 
-func Holamundo(){
+func PackageToFinanciero(r Registro){
 	
 	conn, err := amqp.Dial("amqp://mqadmin:mqadminpassword@10.10.28.84:5672/")
 	failOnError(err, "Failed to connect to RabbitMQ")
@@ -363,7 +376,7 @@ func Holamundo(){
 	  
 	//body := "Hello World!"
 
-	reg:= Registro2{"a",1,0,10,1,2}
+	var reg = RegtoReg2(r)
 
 	fmt.Println(reg)
 	
@@ -392,7 +405,6 @@ func main() {
 		log.Fatal("Error conectando: %v", err)
 	}
 	s := grpc.NewServer()
-	Holamundo()
 	//cl.RegisterSeguimientoServiceServer(s, &server{})
 	pb.RegisterCamionServiceServer(s, &server{})
 	cl.RegisterEnvioServiceServer(s, &server{})
