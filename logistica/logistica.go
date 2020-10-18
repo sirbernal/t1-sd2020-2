@@ -38,11 +38,11 @@ type Registro struct{
 
 type Registro2 struct{
 	IDpaquete string
-	seguimiento int
-	tipo int //0:normal 1: prioritario 2: retail q
-	valor int
-	intentos int
-	estado int//0: En bodega 1: En Camino 2: Recibido 3: No Recibido
+	Seguimiento int
+	Tipo int //0:normal 1: prioritario 2: retail q
+	Valor int
+	Intentos int
+	Estado int//0: En bodega 1: En Camino 2: Recibido 3: No Recibido
 }
 
 
@@ -366,6 +366,7 @@ func Holamundo(){
 	reg:= Registro2{"a",1,0,10,1,2}
 
 	fmt.Println(reg)
+	
 	body, _ := json.Marshal(reg)
 	
 	fmt.Println(string(body))

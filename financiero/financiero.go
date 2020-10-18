@@ -29,6 +29,15 @@ type Registro struct{
 	estado int64 //0: En bodega 1: En Camino 2: Recibido 3: No Recibido
 }
 
+type Registro2 struct{
+	IDpaquete string
+	Seguimiento int
+	Tipo int //0:normal 1: prioritario 2: retail q
+	Valor int
+	Intentos int
+	Estado int//0: En bodega 1: En Camino 2: Recibido 3: No Recibido
+}
+
 var recibidos []Registro
 var ganancia int64
 var perdida int64
@@ -101,7 +110,7 @@ func PrintHolamundo(){
 		for d := range msgs {
 			log.Printf("Received a message: %s", d.Body)
 
-			var m Registro
+			var m Registro2
 
 			_ = json.Unmarshal(d.Body, &m)
 
