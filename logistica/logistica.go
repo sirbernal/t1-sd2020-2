@@ -358,6 +358,7 @@ func Holamundo(){
 
 	body, _ := json.Marshal(registro)
 
+	fmt.Printf(string(body))
 
 	err = ch.Publish(
 		"",     // exchange
