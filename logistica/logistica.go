@@ -372,10 +372,9 @@ func main() {
 	if err != nil {
 		log.Fatal("Error conectando: %v", err)
 	}
-
 	s := grpc.NewServer()
 	Holamundo()
-	cl.RegisterSeguimientoServiceServer(s, &server{})
+	//cl.RegisterSeguimientoServiceServer(s, &server{})
 	pb.RegisterCamionServiceServer(s, &server{})
 	cl.RegisterEnvioServiceServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
