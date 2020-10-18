@@ -358,6 +358,8 @@ func Holamundo(){
 
 	body, _ := json.Marshal(registro)
 	
+	fmt.Println(string(body))
+	
 	err = ch.Publish(
 		"",     // exchange
 		q.Name, // routing key
