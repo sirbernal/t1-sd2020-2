@@ -163,8 +163,10 @@ func main() {
 		switch menu{
 		case "1":
 			envioRegistro("retail.csv")
+			fmt.Println("Envio de registros completados!")
 		case "2":
 			envioRegistro("pymes.csv")
+			fmt.Println("Envio de registros completados!")
 		case "3":
 			ShowSeguimiento()
 		default:

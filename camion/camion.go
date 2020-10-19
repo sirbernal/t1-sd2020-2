@@ -170,19 +170,31 @@ func viaje(env [2]Envio)[2]Envio{  //funcion invocada al hacer una simulacion, l
 }
 func simularEnvio(env [6]Envio)[6]Envio{    // Estan función recibe el arreglo de 6 paquetes, para simular los envios en cada camion y retornará el arreglo con los resultados de la simulacion
 	fmt.Println("Inicializando envio de camiones...")
-	fmt.Println(env)
 	e0,e1 := menorEnvio(env[0],env[1])  //Ordena en cada camion los paquetes en funcion del valor (mayor primero)
 	e2,e3 := menorEnvio(env[2],env[3])
 	e4,e5 := menorEnvio(env[4],env[5])
 	cam1 :=[2]Envio{e0,e1} //camiones ya ordenado
 	cam2 :=[2]Envio{e2,e3}
 	cam3 :=[2]Envio{e4,e5} 
-	fmt.Println("Camión Retail 1")
-	cam1 = viaje(cam1) //simula los viajes de cada camion por separado
-	fmt.Println("Camión Retail 2")
-	cam2 = viaje(cam2)
-	fmt.Println("Camión Normal")
-	cam3 = viaje(cam3)
+	 //simula los viajes de cada camion por separado
+	if !(reflect.DeepEqual(cam1,[2]Envio{Envio{estado:1},Envio{estado:1}})){//revisa que los camiones no esten vacios
+		fmt.Println("Camión Retail 1")
+		cam1 = viaje(cam1)
+	}else{
+		fmt.Println("Camión Retail 1 vacío!")
+	}
+	if !(reflect.DeepEqual(cam2,[2]Envio{Envio{estado:1},Envio{estado:1}})){
+		fmt.Println("Camión Retail 2")
+		cam2 = viaje(cam2)
+	}else{
+		fmt.Println("Camión Retail 2 vacío!")
+	}
+	if !(reflect.DeepEqual(cam2,[2]Envio{Envio{estado:1},Envio{estado:1}})){
+		fmt.Println("Camión Normal")
+		cam3 = viaje(cam3)
+	}else{
+		fmt.Println("Camión Normal vacío!")
+	}	
 	resultado := [6]Envio{cam1[0], cam1[1], cam2[0], cam2[1], cam3[0], cam3[1]} //guarda el resultado de todos los camiones
 	updateCamion(resultado) //guarda los registros de cada camion en memoria para actualizar los archivos de cada uno
 	return resultado //retorna el resultado para enviar a logistica
