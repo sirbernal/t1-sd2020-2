@@ -255,7 +255,11 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 	csvWriter:= csv.NewWriter(file)
 	csvWriter.WriteAll(fullreg)
 	csvWriter.Flush() //actualiza la lista de espera
-	return &cl.EnvioResponse {
+	if reg.tipo!=0{
+		fmt.Print("Nro de seguimiento: "+linea[7]+" ")
+	}
+	fmt.Println("Paquete "+reg.IDpaquete+" recibido")
+	return &cl.EnvioResponse {	
 		Msg: strconv.FormatInt(seguimiento,10),
 	}, nil
 	

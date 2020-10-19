@@ -112,7 +112,7 @@ func envioRegistro(archivo string)(){ //funcion que separa el archivo linea por 
 		if (r.GetMsg()!="0"){
 			fmt.Print("Codigo de seguimiento: "+r.GetMsg()+" ") //Imprime el código de seguimiento solo si no es de tipo retail
 		}
-		fmt.Println("id: "+lista_envios[i].id+", Recibido en retail!")
+		fmt.Println("id: "+lista_envios[i].id+", Recibido en logística!")
 	}	
 }
 
