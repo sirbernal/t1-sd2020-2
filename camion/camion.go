@@ -258,19 +258,22 @@ func main() {
 			}
 			npack++
 			if npack==6{  // Al recibir todos los 6 paquetes correspondientes a 2 de cada camion, se simula los envios
-				resultado = simularEnvio(envios)  // Simulamos envios, definido arriba. Recibiremos un arreglo con los resultados
-				for _, pack := range resultado{ // Paso siguiente: enviar devuelta cada resultado de los envios de los paquetes
-					msg2 := &pb.CamionRequest{    // definimos lo que vamos a enviar por cada paquete
-						IdPaquete: pack.idPaquete,   
-						Seguimiento: pack.seguimiento,
-						Tipo: pack.tipo,        
-						Valor: pack.valor,       
-						Intentos: pack.intentos,    
-						Estado: pack.estado }
-					stream.Send(msg2) // enviamos
-					 // Tiempo de espera definido arriba x el usuario
+				if !(reflect.DeepEqual(envios,[6]Envio{Envio{estado:1},Envio{estado:1},Envio{estado:1},Envio{estado:1},Envio{estado:1},Envio{estado:1}})){
+					resultado = simularEnvio(envios)  // Simulamos envios, definido arriba. Recibiremos un arreglo con los resultados
+					for _, pack := range resultado{ // Paso siguiente: enviar devuelta cada resultado de los envios de los paquetes
+						msg2 := &pb.CamionRequest{    // definimos lo que vamos a enviar por cada paquete
+							IdPaquete: pack.idPaquete,   
+							Seguimiento: pack.seguimiento,
+							Tipo: pack.tipo,        
+							Valor: pack.valor,       
+							Intentos: pack.intentos,    
+							Estado: pack.estado }
+						stream.Send(msg2) // enviamos
+						// Tiempo de espera definido arriba x el usuario
+					}
+					npack++
 				}
-				npack++
+				
 			}
 			if npack==7{    // Cuando terminamos de hacer el recebimieno, simulacion y entrega de resultados de los 6 
 				stream.Send(msg)  //paquetes, nuevamente usamos nuestro mensaje inicial para avisar a logistica que podemos
