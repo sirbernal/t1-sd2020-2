@@ -27,9 +27,11 @@ type Envio struct{
 	estado int64 //{En bodega, En camino, Recibido o No Recibido}={0,1,2,3}
 	fecha_entrega time.Time
 }
+//listas que guardan los datos de cada camion para generar el archivo resumen
 var camionretail1 [][] string
 var camionretail2 [][] string
 var camionnormal [][] string
+//variables (con auxiliares int) para guardar tiempos de espera
 var tiempocamiones string
 var tiempocamionesint int
 var tiempoentrega string
@@ -122,7 +124,7 @@ func updateCamion(result [6]Envio){    //Funcion que guarda los registros de los
 	
 
 }
-func menorEnvio(x Envio, y Envio)(Envio, Envio){   
+func menorEnvio(x Envio, y Envio)(Envio, Envio){ //ordena entre dos envios de mayor a menor segun costo
 	if x.valor>y.valor{
 		return x,y
 	}else{
@@ -134,7 +136,7 @@ func viaje(env [2]Envio)[2]Envio{  //funcion invocada al hacer una simulacion, l
 		estado:1,         // Es aqui donde funcionan las probabilidades mencionadas en el enunciado y el hacer intentos
 	}                         // de entrega
 	for i,pac := range env{
-		if reflect.DeepEqual(pac,void){
+		if reflect.DeepEqual(pac,void){ //si el paquete es vacio (no existe) evita realizar el envio
 			continue
 		}
 		for x:=0;x<4;x++{
@@ -147,7 +149,7 @@ func viaje(env [2]Envio)[2]Envio{  //funcion invocada al hacer una simulacion, l
 				break
 			}
 			pac.intentos++
-			rand.Seed(time.Now().UnixNano())
+			rand.Seed(time.Now().UnixNano()) 
 			probabilidad:= rand.Intn(101)
 			if probabilidad<80{
 				pac.estado=2
@@ -159,19 +161,19 @@ func viaje(env [2]Envio)[2]Envio{  //funcion invocada al hacer una simulacion, l
 	}
 	return env
 }
-func simularEnvio(env [6]Envio)[6]Envio{    // Estan función recibe el arreglo de 6 paquetes, para simular los envios 
-	e0,e1 := menorEnvio(env[0],env[1])  // en cada camion y retornará el arreglo con los resultados de la simulacion
+func simularEnvio(env [6]Envio)[6]Envio{    // Estan función recibe el arreglo de 6 paquetes, para simular los envios en cada camion y retornará el arreglo con los resultados de la simulacion
+	e0,e1 := menorEnvio(env[0],env[1])  //Ordena en cada camion los paquetes en funcion del valor (mayor primero)
 	e2,e3 := menorEnvio(env[2],env[3])
 	e4,e5 := menorEnvio(env[4],env[5])
-	cam1 :=[2]Envio{e0,e1} //camion retail 1
-	cam2 :=[2]Envio{e2,e3}//camion retail 2
-	cam3 :=[2]Envio{e4,e5} //camion normal
-	cam1 = viaje(cam1)
+	cam1 :=[2]Envio{e0,e1} //camiones ya ordenado
+	cam2 :=[2]Envio{e2,e3}
+	cam3 :=[2]Envio{e4,e5} 
+	cam1 = viaje(cam1) //simula los viajes de cada camion por separado
 	cam2 = viaje(cam2)
 	cam3 = viaje(cam3)
-	resultado := [6]Envio{cam1[0], cam1[1], cam2[0], cam2[1], cam3[0], cam3[1]}
-	updateCamion(resultado)
-	return resultado
+	resultado := [6]Envio{cam1[0], cam1[1], cam2[0], cam2[1], cam3[0], cam3[1]} //guarda el resultado de todos los camiones
+	updateCamion(resultado) //guarda los registros de cada camion en memoria para actualizar los archivos de cada uno
+	return resultado //retorna el resultado para enviar a logistica
 
 }
 

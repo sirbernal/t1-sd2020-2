@@ -26,10 +26,11 @@ type Envio struct{
 	destino string
 	prioritario int64 //{normal, prioritario, retail}={0,1,2}
 }
-var tiempopaquetes string
+
+var tiempopaquetes string //tiempo de espera+auxiliar de conversion
 var tiempopaquetesint int
-func envioRegistro(archivo string)(){
-	conn, err := grpc.Dial(dire, grpc.WithInsecure())
+func envioRegistro(archivo string)(){ //funcion que separa el archivo linea por linea para ser enviado a logistica
+	conn, err := grpc.Dial(dire, grpc.WithInsecure()) //inicia conexión con logistica 
 	if err != nil {
 		log.Fatalf("Conn err: %v", err)
 
@@ -37,7 +38,7 @@ func envioRegistro(archivo string)(){
 	defer conn.Close()
 	doc :=archivo
 	
-	f, err := os.Open(doc)
+	f, err := os.Open(doc) 
 	if err != nil {
 		log.Fatalf("Error al abrir el CSV: %v", err)
 	}
@@ -45,16 +46,16 @@ func envioRegistro(archivo string)(){
 	reader := csv.NewReader(f)
 	reader.Comma = ','         
 	reader.FieldsPerRecord = 6
-	var lista_envios []Envio
+	var lista_envios []Envio //guarda en formato de Envio cada linea
 
-	for {
+	for { //recorre archivo linea por linea para enviarlo
 		record, err := reader.Read()
 
 		if err == io.EOF { // cuando termina de leer el archivo
 			break 
 		}
 		
-		if record[0] == "id"{
+		if record[0] == "id"{ //saltar primera linea
 			continue
 		}
 
@@ -81,13 +82,13 @@ func envioRegistro(archivo string)(){
 			destino : record[4],
 			prioritario: p,
 		}
-		lista_envios = append(lista_envios, envio)
+		lista_envios = append(lista_envios, envio)//guarda la nueva linea
 	}
 
 	//fmt.Println(lista_envios)
 	//Envio de retail
 	
-	for i := 0; i < len(lista_envios); i++ {
+	for i := 0; i < len(lista_envios); i++ { //recorre las lineas guardadas en el nuevo formato
 		
 		c := cl.NewEnvioServiceClient(conn)
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -102,20 +103,20 @@ func envioRegistro(archivo string)(){
 			Prioritario : lista_envios[i].prioritario,
 		}
 		
-		r, err := c.Envio(ctx, envio)
+		r, err := c.Envio(ctx, envio) //envia la linea a logistica
 		time.Sleep(time.Duration(tiempopaquetesint*1000)*time.Millisecond)
 		if err != nil {
 			log.Fatalf("Requ err: %v", err)
 		}
 		
-		
-		fmt.Println("Codigo de seguimiento: "+r.GetMsg())
-
+		if (r.GetMsg()!="0"){
+			fmt.Println("Codigo de seguimiento: "+r.GetMsg()) //Imprime el código de seguimiento solo si no es de tipo retail
+		}
 	}	
 }
 
-func ShowSeguimiento (){
-	conn, err := grpc.Dial(dire, grpc.WithInsecure())
+func ShowSeguimiento (){ //solicita el estado de un paquete en base al numero de seguimiento a logistica
+	conn, err := grpc.Dial(dire, grpc.WithInsecure()) //inicia conexion con logistica
 	if err != nil {
 		log.Fatalf("Conn err: %v", err)
 
@@ -124,7 +125,7 @@ func ShowSeguimiento (){
 	fmt.Println(" Ingrese codigo de seguimiento:  ")
 	var seguimiento string
 	fmt.Scanln(&seguimiento)
-	c := cl.NewEnvioServiceClient(conn)
+	c := cl.NewEnvioServiceClient(conn) //envia número de seguimiento
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
@@ -132,7 +133,7 @@ func ShowSeguimiento (){
 		Seguimiento: seguimiento,
 	}
 
-	r, _ := c.Seguimiento(ctx, seg)
+	r, _ := c.Seguimiento(ctx, seg) //recibe estado del pedido
 
 	fmt.Println("Estado del pedido: ", r.GetEstado())
 	fmt.Println("")
@@ -173,27 +174,4 @@ func main() {
 
 
 	}
-	//fmt.Println("Usuario del sistema PrestigioExpress, por favor ingresar el tiempo de envio de pedidos a logistica (en segundos): ")
-	//var tiempo int64
-	//fmt.Scanln(&tiempo)  
-	// Creando conexion TCP
-	
-
-	// Lectura de Retail
-	/* c := cl.NewSeguimientoServiceClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
-	envio := &cl.SeguimientoRequest{
-		Msg: "wea",
-		Msg2: "wea2",
-	}
-	r, err := c.Seguimiento(ctx, envio)
-
-	if err != nil {
-		log.Fatalf("Requ err: %v", err)
-	}
-
-	log.Println("Respuesta : ", r.GetConfirmation()) */
-
 }
