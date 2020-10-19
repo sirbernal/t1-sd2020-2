@@ -52,7 +52,7 @@ var colaretail[] Registro
 var colaprioritario[] Registro
 var colanormal[] Registro
 var completados[] Registro
-
+var flag = true
 func RemoveIndex(s []Registro, index int) []Registro {
 	return append(s[:index], s[index+1:]...)
 }
@@ -142,9 +142,11 @@ func recepcionCamion(rescam [6]Registro){
 				continue
 			}
 			PackageToFinanciero(pack)
+			flag=true
 		}
 	}
-	if len(colanormal)+len(colaprioritario)+len(colaretail)==0{
+	if len(colanormal)+len(colaprioritario)+len(colaretail)==0 && len(completados)>0 &&flag{
+		flag=false
 		PackageToFinanciero(Registro{})
 	}
 }
