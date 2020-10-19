@@ -243,7 +243,6 @@ func main() {
 		var resultado [6]Envio // Para guardar los paquetes que se reciben
 		for {     // Recibimos los paquetes de logistica
 			resp, err := stream.Recv()
-			fmt.Println(npack)
 			paquete := Envio{          // los paquetes los guardamos en esta clase
 				idPaquete : resp.IdPaquete,
 				seguimiento : resp.Seguimiento,

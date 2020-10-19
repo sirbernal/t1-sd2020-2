@@ -154,7 +154,7 @@ func main() {
 	var menu string
 	
 	for {
-		fmt.Print("Menu Cliente \n1.-Ingreso de retail\n2.-Ingreso de Pyme\n3.-Realizar Seguimiento\nIngrese opción:")
+		fmt.Print("Menu Cliente \n1.-Modo retail\n2.-Modo Pyme\n3.-Realizar Seguimiento\nIngrese opción:")
 		_,err:=fmt.Scanln(&menu)
 		if err!=nil{
 			fmt.Print("\nFormato de ingreso no válido, pruebe nuevamente:")
@@ -162,11 +162,43 @@ func main() {
 		}
 		switch menu{
 		case "1":
-			envioRegistro("retail.csv")
+			for{
+				fmt.Print("Menu Retail \n1.-Enviar registros\n2.-Volver atrás\nIngrese opción:")
+				_,err:=fmt.Scanln(&menu)
+				if err!=nil{
+					fmt.Print("\nFormato de ingreso no válido, pruebe nuevamente:")
+					continue
+				}
+				switch menu{
+				case "1":
+					envioRegistro("retail.csv")
+				case "2":
+					break
+				default:
+					fmt.Print("\nFormato u opción no válida, pruebe nuevamente:\n\n")
+					continue
+				}	
+			}
 		case "2":
-			envioRegistro("pymes.csv")
-		case "3":
-			ShowSeguimiento()
+			for{
+				fmt.Print("Menu Pymes \n1.-Enviar registros\n2.-Realizar Seguimiento\n3.-Volver\nIngrese opción:")
+				_,err:=fmt.Scanln(&menu)
+				if err!=nil{
+					fmt.Print("\nFormato de ingreso no válido, pruebe nuevamente:")
+					continue
+				}
+				switch menu{
+				case "1":
+					envioRegistro("pymes.csv")
+				case "2":
+					ShowSeguimiento()
+				case "3":
+					break
+				default:
+					fmt.Print("\nFormato u opción no válida, pruebe nuevamente:\n\n")
+					continue
+				}
+			}			
 		default:
 			fmt.Print("\nFormato u opción no válida, pruebe nuevamente:\n\n")
 			continue
