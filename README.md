@@ -21,3 +21,10 @@ Dependiendo de la máquina, se deberá ejecutar el comando make correspondiente:
 
 #### Funcionamiento del Código
 Se usó el lenguaje Go junto con RabbitMQ y gRPC para los envios de datos entre las maquinas. La logica de cada código esta comentada. Se detalla que en la maquina de financiero (10.10.28.84) esta corriendo el server Rabbitmq.
+
+#### Observaciones
+Se deben correr los  programas en el siguiente orden: logistica - financiero - camion - cliente  
+Cliente permite pasar en tiempo real entre modo pyme y modo retail  
+Camiones estara siempre listo para realizar envios  
+Financiero realizará resumen (termino solicitado en pauta) cada vez que se hayan realizado todos los envios independiente el resultado  
+
