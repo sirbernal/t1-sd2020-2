@@ -112,7 +112,7 @@ func CalcularEnvio() [6]Registro{
 }
 func recepcionCamion(rescam [6]Registro){
 	for _,pack := range rescam{
-		if reflect.DeepEqual(pack,Registro{estado:1}){
+		if reflect.DeepEqual(pack,Registro{estado:1})||reflect.DeepEqual(pack,Registro{}){
 			continue
 		}else{
 			completados=append(completados,pack)
