@@ -196,6 +196,7 @@ func simularEnvio(env [6]Envio)[6]Envio{    // Estan función recibe el arreglo 
 		fmt.Println("Camión Normal vacío!")
 	}	
 	resultado := [6]Envio{cam1[0], cam1[1], cam2[0], cam2[1], cam3[0], cam3[1]} //guarda el resultado de todos los camiones
+	fmt.Println("Envios completados... actualizando registros")
 	updateCamion(resultado) //guarda los registros de cada camion en memoria para actualizar los archivos de cada uno
 	return resultado //retorna el resultado para enviar a logistica
 
@@ -271,7 +272,8 @@ func main() {
 			npack++
 			if npack==6{  // Al recibir todos los 6 paquetes correspondientes a 2 de cada camion, se simula los envios
 				if !(reflect.DeepEqual(envios,[6]Envio{Envio{estado:1},Envio{estado:1},Envio{estado:1},Envio{estado:1},Envio{estado:1},Envio{estado:1}})){
-					resultado = simularEnvio(envios)  
+					resultado = simularEnvio(envios)
+					fmt.Println("Enviando Resultados a Logistica...")  
 				}
 				// Simulamos envios, definido arriba. Recibiremos un arreglo con los resultados
 				for _, pack := range resultado{ // Paso siguiente: enviar devuelta cada resultado de los envios de los paquetes
@@ -287,7 +289,8 @@ func main() {
 				}
 				npack++
 			}
-			if npack==7{    // Cuando terminamos de hacer el recebimieno, simulacion y entrega de resultados de los 6 
+			if npack==7{    // Cuando terminamos de hacer el recibimiento, simulacion y entrega de resultados de los 6 
+				fmt.Println("Camiones disponibles, solicitando envios a logistica..")
 				stream.Send(msg)  //paquetes, nuevamente usamos nuestro mensaje inicial para avisar a logistica que podemos
 				npack=0        // recibir 6 paquetes mas
 			}

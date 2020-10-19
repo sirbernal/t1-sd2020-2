@@ -110,8 +110,9 @@ func envioRegistro(archivo string)(){ //funcion que separa el archivo linea por 
 		}
 		
 		if (r.GetMsg()!="0"){
-			fmt.Println("Codigo de seguimiento: "+r.GetMsg()) //Imprime el código de seguimiento solo si no es de tipo retail
+			fmt.Print("Codigo de seguimiento: "+r.GetMsg()+" ") //Imprime el código de seguimiento solo si no es de tipo retail
 		}
+		fmt.Println("id: "+lista_envios[i].id+", Recibido en retail!")
 	}	
 }
 
@@ -153,8 +154,9 @@ func main() {
 	}
 	var menu string
 	
-	for {
-		fmt.Print("Menu Cliente \n1.-Modo retail\n2.-Modo Pyme\n3.-Realizar Seguimiento\nIngrese opción:")
+	LoopMain:
+		for {
+		fmt.Print("\nMenu Principal \n1.-Modo retail\n2.-Modo Pyme\n3Terminar Aplicacion Cliente\nIngrese opción:")
 		_,err:=fmt.Scanln(&menu)
 		if err!=nil{
 			fmt.Print("\nFormato de ingreso no válido, pruebe nuevamente:")
@@ -162,13 +164,55 @@ func main() {
 		}
 		switch menu{
 		case "1":
-			envioRegistro("retail.csv")
-			fmt.Println("Envio de registros completados!")
+			var submenu1 string
+			submenuretail:
+				for {
+					fmt.Print("\nMenu Retail \n1.-Enviar Registro\n2.-Volver\nIngrese opción:")
+					_,err:=fmt.Scanln(&submenu1)
+					if err!=nil{
+						fmt.Print("\nFormato de ingreso no válido, pruebe nuevamente:")
+						continue
+					}
+					switch submenu1{
+					case "1":
+						envioRegistro("retail.csv")
+						fmt.Println("Envio de registros completados!")
+					case "2":
+						break submenuretail
+					default:
+						fmt.Print("\nFormato u opción no válida, pruebe nuevamente:\n\n")
+						continue
+					}
+				
+				}
 		case "2":
-			envioRegistro("pymes.csv")
+			var submenu2 string
+			submenupyme:
+				for {
+					fmt.Print("\n\n\nMenu Pyme \n1.-Enviar Registro\n2.-Realizar Seguimiento\n3.-Volver\nIngrese opción:")
+					_,err:=fmt.Scanln(&submenu2)
+					if err!=nil{
+						fmt.Print("\nFormato de ingreso no válido, pruebe nuevamente:")
+						continue
+					}
+					switch submenu2{
+					case "1":
+						envioRegistro("pymes.csv")
+						fmt.Println("Envio de registros completados!")
+					case "2":
+						ShowSeguimiento()
+					case "3":
+						break submenupyme
+					default:
+						fmt.Print("\nFormato u opción no válida, pruebe nuevamente:\n\n")
+						continue
+					}
+				
+				}
 			fmt.Println("Envio de registros completados!")
 		case "3":
-			ShowSeguimiento()
+			fmt.Println("Cerrando App")
+			break LoopMain
 		default:
 			fmt.Print("\nFormato u opción no válida, pruebe nuevamente:\n\n")
 			continue
@@ -176,4 +220,5 @@ func main() {
 
 
 	}
+	
 }
