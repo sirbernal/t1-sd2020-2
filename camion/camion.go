@@ -170,6 +170,7 @@ func viaje(env [2]Envio)[2]Envio{  //funcion invocada al hacer una simulacion, l
 }
 func simularEnvio(env [6]Envio)[6]Envio{    // Estan función recibe el arreglo de 6 paquetes, para simular los envios en cada camion y retornará el arreglo con los resultados de la simulacion
 	fmt.Println("Inicializando envio de camiones...")
+	fmt.Println(env)
 	e0,e1 := menorEnvio(env[0],env[1])  //Ordena en cada camion los paquetes en funcion del valor (mayor primero)
 	e2,e3 := menorEnvio(env[2],env[3])
 	e4,e5 := menorEnvio(env[4],env[5])
