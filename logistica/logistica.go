@@ -147,8 +147,9 @@ func recepcionCamion(rescam [6]Registro){//funcion que actualiza colas al recibi
 	}
 	if len(colanormal)+len(colaprioritario)+len(colaretail)==0 && len(completados)>0 &&flag{ //solo si las colas estan vacias, existen paquetes completados y el ultimo paquete fue real
 		flag=false //reinicia condicional de paquetes reales
+		fmt.Print("Todos los paquetes en el sistema han sido procesados\n Solicitando Actualización a finanzas...")
 		PackageToFinanciero(Registro{}) //envia paquete vacio a finanzas lo cual notifica que ha terminado el sistema (ya envio todo)
-		                    			//, donde puede realizar los calculos y actualización del archivo de finanzas
+		fmt.Println("Listo!")//, donde puede realizar los calculos y actualización del archivo de finanzas
 	}
 }
 func TranslateStatus(state int64)string{ //traductor a string del estado por numero
@@ -248,8 +249,7 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 	}
 	csvWriter:= csv.NewWriter(file)
 	csvWriter.WriteAll(fullreg)
-	csvWriter.Flush()
-	CalcularEnvio() //actualiza la lista de espera
+	csvWriter.Flush() //actualiza la lista de espera
 	return &cl.EnvioResponse {
 		Msg: strconv.FormatInt(seguimiento,10),
 	}, nil
@@ -260,7 +260,6 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 func (s *server) Camion(stream pb.CamionService_CamionServer) error { //recibe la solicitud y envia 6 paquetes para los 3 camiones en espera
 	recepcion:= [6]Registro{} //lista que guarda los paquetes que se enviaran a los camiones
 	counterrecep:= 0 //contador de recepciones de paquetes de camiones
-	fmt.Println(recepcion)
 	for {
 		req, err := stream.Recv()
 		if err != nil {
@@ -277,11 +276,13 @@ func (s *server) Camion(stream pb.CamionService_CamionServer) error { //recibe l
 			}
 			counterrecep++
 			if counterrecep==6{ //al concretar los 6 paquetes procede a actualizar las colas
+				fmt.Println("Recepción de resultado de envio de camiones completado!")
 				counterrecep=0
 				recepcionCamion(recepcion) //funcion que actualiza las colas
 				recepcion=[6]Registro{}
 			}
 		}else{//seguimiento=-1 representa un paquete vacío, es decir que camion esta disponible para hacer envios solicitando paquetes para enviar
+			fmt.Println("Solicitud de camiones disponible recibida!\nCalculando pedidos")
 			counterrecep=0 //reinicia el contador de paquetes
 			paquetes := CalcularEnvio() //calcula que paquetes acorde a las colas iran a los camiones
 			for _, paquete:= range paquetes {

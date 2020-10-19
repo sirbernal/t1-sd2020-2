@@ -90,10 +90,11 @@ func failOnError(err error, msg string) {
 }
 
 func RecepcionLogistica(){//funcion encargada de recibir los paquetes de la cola de rabbit desde logistica
+	fmt.Print("Inicializando sistema de finanzas...")
 	conn, err := amqp.Dial("amqp://mqadmin:mqadminpassword@localhost:5672/")
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
-
+	fmt.Println("Listo!")
 	ch, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
@@ -125,16 +126,23 @@ func RecepcionLogistica(){//funcion encargada de recibir los paquetes de la cola
 	  
 	go func() { 
 		for d := range msgs { //revisa cada mensaje recibido en cola
-			log.Printf("Received a message: %s", d.Body)
+			log.Printf("Paquete recibido desde logística: %s", d.Body)
 
 			var m Registro
 
 			_ = json.Unmarshal(d.Body, &m) //unmarchall del mensaje
 
 			if reflect.DeepEqual(m,Registro{}){ //si el mensaje es vacio realiza lo siguiente (especificado en logistica los casos posibles)
+				fmt.Print("\nRealizando calculo de finanzas...")
 				CalculoFinanza() //realiza los calculos de todos los paquetes
+				fmt.Println("Listo!")
+				fmt.Print("Actualizando resumen por paquete...")
 				EscribirArchivoFinanza() //actualiza el archivo de finanzas
-				fmt.Println(ganancia,perdida,total) //imprime las ganancias, perdidas y total
+				fmt.Println("Listo!\n\n")
+				//imprime las ganancias, perdidas y total
+				fmt.Println("Ganancia: ",ganancia)
+				fmt.Println("Perdida: ",perdida)
+				fmt.Println("Total: ",total) 
 			}else{
 				recibidos=append(recibidos,m) //guarda el mensaje
 			}

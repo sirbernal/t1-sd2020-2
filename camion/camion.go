@@ -139,12 +139,16 @@ func viaje(env [2]Envio)[2]Envio{  //funcion invocada al hacer una simulacion, l
 		if reflect.DeepEqual(pac,void){ //si el paquete es vacio (no existe) evita realizar el envio
 			continue
 		}
+		fmt.Println("Enviando paquete"+pac.idPaquete+" ,Intento: "+strconv.FormatInt(pac.intentos+1,10))
+		time.Sleep(time.Duration(tiempoentregaint*1000)*time.Millisecond)
 		for x:=0;x<4;x++{
 			if x==3{
+				fmt.Println("Límite de envios superado\n")
 				pac.estado=3
 				break
 			}
 			if pac.tipo<2 && int64(x)*10>pac.valor{
+				fmt.Println("Límite de costo superado\n")
 				pac.estado=3
 				break
 			}
@@ -152,9 +156,12 @@ func viaje(env [2]Envio)[2]Envio{  //funcion invocada al hacer una simulacion, l
 			rand.Seed(time.Now().UnixNano()) 
 			probabilidad:= rand.Intn(101)
 			if probabilidad<80{
+				fmt.Println("Pedido Entregado!\n")
 				pac.estado=2
 				pac.fecha_entrega=time.Now()
 				break
+			}else{
+				fmt.Println("Entrega fallida... procesando nuevo intento de entrega...")
 			}
 		}
 		env[i]=pac
@@ -162,14 +169,18 @@ func viaje(env [2]Envio)[2]Envio{  //funcion invocada al hacer una simulacion, l
 	return env
 }
 func simularEnvio(env [6]Envio)[6]Envio{    // Estan función recibe el arreglo de 6 paquetes, para simular los envios en cada camion y retornará el arreglo con los resultados de la simulacion
+	fmt.Println("Inicializando envio de camiones...")
 	e0,e1 := menorEnvio(env[0],env[1])  //Ordena en cada camion los paquetes en funcion del valor (mayor primero)
 	e2,e3 := menorEnvio(env[2],env[3])
 	e4,e5 := menorEnvio(env[4],env[5])
 	cam1 :=[2]Envio{e0,e1} //camiones ya ordenado
 	cam2 :=[2]Envio{e2,e3}
 	cam3 :=[2]Envio{e4,e5} 
+	fmt.Println("Camión Retail 1")
 	cam1 = viaje(cam1) //simula los viajes de cada camion por separado
+	fmt.Println("Camión Retail 2")
 	cam2 = viaje(cam2)
+	fmt.Println("Camión Normal")
 	cam3 = viaje(cam3)
 	resultado := [6]Envio{cam1[0], cam1[1], cam2[0], cam2[1], cam3[0], cam3[1]} //guarda el resultado de todos los camiones
 	updateCamion(resultado) //guarda los registros de cada camion en memoria para actualizar los archivos de cada uno
@@ -179,7 +190,7 @@ func simularEnvio(env [6]Envio)[6]Envio{    // Estan función recibe el arreglo 
 
 func main() {
 	// En estas primeras lineas se pide los tiempos de espera y demora de los camiones
-	fmt.Print("Inicializando servicio de reparto...\nIngrese tiempo (segundos) de espera de camiones:")
+	fmt.Print("Inicializando servicio de reparto...Listo!\nIngrese tiempo (segundos) de espera de camiones:")
 	for {
 		fmt.Scanln(&tiempocamiones)
 		intmode, err:=strconv.Atoi(tiempocamiones)
@@ -257,7 +268,7 @@ func main() {
 						Intentos: pack.intentos,    
 						Estado: pack.estado }
 					stream.Send(msg2) // enviamos
-					time.Sleep(time.Duration(tiempoentregaint*1000)*time.Millisecond) // Tiempo de espera definido arriba x el usuario
+					 // Tiempo de espera definido arriba x el usuario
 				}
 				npack++
 			}
