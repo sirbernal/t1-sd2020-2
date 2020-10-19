@@ -156,7 +156,7 @@ func main() {
 	
 	LoopMain:
 		for {
-		fmt.Print("\nMenu Principal \n1.-Modo retail\n2.-Modo Pyme\n3Terminar Aplicacion Cliente\nIngrese opción:")
+		fmt.Print("\n\n---Menu Principal--- \n1.-Modo retail\n2.-Modo Pyme\n3.-Terminar Aplicacion Cliente\nIngrese opción:")
 		_,err:=fmt.Scanln(&menu)
 		if err!=nil{
 			fmt.Print("\nFormato de ingreso no válido, pruebe nuevamente:")
@@ -167,7 +167,7 @@ func main() {
 			var submenu1 string
 			submenuretail:
 				for {
-					fmt.Print("\nMenu Retail \n1.-Enviar Registro\n2.-Volver\nIngrese opción:")
+					fmt.Print("\n\n---Menu Retail--- \n1.-Enviar Registro\n2.-Volver\nIngrese opción:")
 					_,err:=fmt.Scanln(&submenu1)
 					if err!=nil{
 						fmt.Print("\nFormato de ingreso no válido, pruebe nuevamente:")
@@ -189,7 +189,7 @@ func main() {
 			var submenu2 string
 			submenupyme:
 				for {
-					fmt.Print("\n\n\nMenu Pyme \n1.-Enviar Registro\n2.-Realizar Seguimiento\n3.-Volver\nIngrese opción:")
+					fmt.Print("\n\n---Menu Pyme--- \n1.-Enviar Registro\n2.-Realizar Seguimiento\n3.-Volver\nIngrese opción:")
 					_,err:=fmt.Scanln(&submenu2)
 					if err!=nil{
 						fmt.Print("\nFormato de ingreso no válido, pruebe nuevamente:")
@@ -211,7 +211,7 @@ func main() {
 				}
 			fmt.Println("Envio de registros completados!")
 		case "3":
-			fmt.Println("Cerrando App")
+			fmt.Println("Cerrando Cliente")
 			break LoopMain
 		default:
 			fmt.Print("\nFormato u opción no válida, pruebe nuevamente:\n\n")

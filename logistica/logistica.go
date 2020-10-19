@@ -154,7 +154,7 @@ func recepcionCamion(rescam [6]Registro){//funcion que actualiza colas al recibi
 		flag=false //reinicia condicional de paquetes reales
 		fmt.Print("Todos los paquetes en el sistema han sido procesados\n Solicitando Actualización a finanzas...")
 		PackageToFinanciero(Registro{}) //envia paquete vacio a finanzas lo cual notifica que ha terminado el sistema (ya envio todo)
-		fmt.Println("Listo!")//, donde puede realizar los calculos y actualización del archivo de finanzas
+		fmt.Println("Listo!\n")//, donde puede realizar los calculos y actualización del archivo de finanzas
 	}
 }
 func TranslateStatus(state int64)string{ //traductor a string del estado por numero
@@ -255,7 +255,7 @@ func (s *server) Envio(ctx context.Context, msg *cl.EnvioRequest) (*cl.EnvioResp
 	csvWriter:= csv.NewWriter(file)
 	csvWriter.WriteAll(fullreg)
 	csvWriter.Flush() //actualiza la lista de espera
-	if reg.tipo!=0{
+	if linea[7]!="0"{
 		fmt.Print("Nro de seguimiento: "+linea[7]+" ")
 	}
 	fmt.Println("Paquete "+reg.IDpaquete+" recibido")
