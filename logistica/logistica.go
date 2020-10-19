@@ -121,6 +121,8 @@ func recepcionCamion(rescam [6]Registro){//funcion que actualiza colas al recibi
 				for i,j :=range colanormal{
 					if j.seguimiento==pack.seguimiento && j.IDpaquete==pack.IDpaquete && j.valor==pack.valor{
 						colanormal=RemoveIndex(colanormal,i)
+						PackageToFinanciero(pack) //envia el paquete a finanzas
+						flag=true
 						break
 					}
 				}
@@ -128,6 +130,8 @@ func recepcionCamion(rescam [6]Registro){//funcion que actualiza colas al recibi
 				for i,j :=range colaprioritario{
 					if j.seguimiento==pack.seguimiento && j.IDpaquete==pack.IDpaquete && j.valor==pack.valor{
 						colaprioritario=RemoveIndex(colaprioritario,i)
+						PackageToFinanciero(pack) //envia el paquete a finanzas
+						flag=true
 						break
 					}
 				}
@@ -135,14 +139,15 @@ func recepcionCamion(rescam [6]Registro){//funcion que actualiza colas al recibi
 				for i,j :=range colaretail{
 					if j.seguimiento==pack.seguimiento && j.IDpaquete==pack.IDpaquete && j.valor==pack.valor{
 						colaretail=RemoveIndex(colaretail,i)
+						PackageToFinanciero(pack) //envia el paquete a finanzas
+						flag=true
 						break
 					}
 				}
 			default:
 				continue
 			}
-			PackageToFinanciero(pack) //envia el paquete a finanzas
-			flag=true //notifica que al menos un paquete de los camiones existe
+			 //notifica que al menos un paquete de los camiones existe
 		}
 	}
 	if len(colanormal)+len(colaprioritario)+len(colaretail)==0 && len(completados)>0 &&flag{ //solo si las colas estan vacias, existen paquetes completados y el ultimo paquete fue real

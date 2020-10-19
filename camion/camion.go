@@ -189,7 +189,7 @@ func simularEnvio(env [6]Envio)[6]Envio{    // Estan función recibe el arreglo 
 	}else{
 		fmt.Println("Camión Retail 2 vacío!")
 	}
-	if !(reflect.DeepEqual(cam2,[2]Envio{Envio{estado:1},Envio{estado:1}})){
+	if !(reflect.DeepEqual(cam3,[2]Envio{Envio{estado:1},Envio{estado:1}})){
 		fmt.Println("Camión Normal")
 		cam3 = viaje(cam3)
 	}else{
